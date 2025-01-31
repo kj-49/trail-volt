@@ -12,5 +12,6 @@ void setup() {
 void loop() {
   
   redraw_lcd();
+  delay(500);
 
 }
