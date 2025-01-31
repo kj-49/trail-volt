@@ -1,9 +1,16 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SH110X.h>
+#include "constants.h"
+#include "lcd.h"
+
 void setup() {
-  // put your setup code here, to run once:
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+  redraw_lcd();
 
 }
