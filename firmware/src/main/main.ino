@@ -6,12 +6,13 @@
 #include "lcd.h"
 
 void setup() {
-
+  configure_lcd();
 }
 
 void loop() {
   
   redraw_lcd();
+
   delay(500);
 
 }

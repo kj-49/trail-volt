@@ -31,10 +31,16 @@ void drawBatteryIndicator(int x, int y, int cellCharge[]) {
   }
 }
 
-void redraw_lcd() {
+void configure_lcd() {
   Serial.begin(9600);
 
+  display.begin(i2c_Address, true);
+
   display.clearDisplay();
+}
+
+void redraw_lcd() {
+
 
   // Display temperature
   display.setCursor(0, 0);
@@ -58,6 +64,8 @@ void redraw_lcd() {
   drawBatteryIndicator(0, 30, cellCharge);
 
   display.display();
+
+  delay(500);
 }
 
 
