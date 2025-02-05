@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ksjam/Documents/dev/the-fan/firmware/src/temperature.h</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/the-fan/firmware/src/configuration.c</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/the-fan/firmware/src/main.c</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/the-fan/firmware/src/avr-common.h</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/the-fan/firmware/src/avr-common.c</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/the-fan/firmware/src/configuration.h</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/temperature.h</file>
+            <file>file:/C:/Users/ksjam/OneDrive/Desktop/u8g2-master/u8g2-master/csrc/u8x8.h</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/main.c</file>
+            <file>file:/C:/Users/ksjam/OneDrive/Desktop/u8g2-master/u8g2-master/csrc/u8x8_d_sh1106_64x32.c</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/twimastertimeout.c</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/configuration.c</file>
         </group>
     </open-files>
 </project-private>
