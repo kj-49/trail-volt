@@ -3,20 +3,18 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>controller</name>
-            <creation-uuid>7a73ddc1-9e6b-4c04-8ba6-e6211f59debf</creation-uuid>
+            <name>twi</name>
+            <creation-uuid>df595ea8-6a32-43e1-9d83-f249cbb94150</creation-uuid>
             <make-project-type>0</make-project-type>
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>.</sourceRootElem>
-                <sourceRootElem>../lib/u8g2.X</sourceRootElem>
-                <sourceRootElem>../lib/twi.X/twi-host.X/peripherals/TWI</sourceRootElem>
+                <sourceRootElem/>
             </sourceRootList>
             <confList>
                 <confElem>
                     <name>default</name>
-                    <type>2</type>
+                    <type>3</type>
                 </confElem>
             </confList>
             <formatting>

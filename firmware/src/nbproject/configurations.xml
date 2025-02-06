@@ -8,6 +8,7 @@
       <itemPath>avr-common.h</itemPath>
       <itemPath>configuration.h</itemPath>
       <itemPath>../lib/u8g2.X/u8g2.h</itemPath>
+      <itemPath>../lib/twi.X/twi-host.X/peripherals/TWI/TWI_host.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -29,6 +30,7 @@
   <sourceRootList>
     <Elem>.</Elem>
     <Elem>../lib/u8g2.X</Elem>
+    <Elem>../lib/twi.X/twi-host.X/peripherals/TWI</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -38,7 +40,7 @@
         <targetDevice>AVR128DB48</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool>nEdbgTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>3</platform>
@@ -52,6 +54,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>../lib/u8g2.X/dist/default/production/u8g2.X.a</linkerLibFileItem>
+            <linkerLibFileItem>../lib/twi.X/dist/default/production/twi.X.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
