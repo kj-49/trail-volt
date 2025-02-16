@@ -9,6 +9,7 @@
       <itemPath>../lib/u8g2.X/u8g2.h</itemPath>
       <itemPath>../lib/twi.X/twi-host.X/peripherals/TWI/TWI_host.h</itemPath>
       <itemPath>display.h</itemPath>
+      <itemPath>sensors.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

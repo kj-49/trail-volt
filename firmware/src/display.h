@@ -8,6 +8,12 @@
 #ifndef DISPLAY_H
 #define	DISPLAY_H
 
+#include "sensors.h"
+#include "../lib/u8g2.X/u8g2.h"
+#include "../lib/twi.X/twi-host.X/peripherals/TWI/TWI_host.h"
+
+void configure_display(u8g2_t *u8g2);
+void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state);
 
 #endif	/* DISPLAY_H */
 
