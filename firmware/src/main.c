@@ -1,5 +1,7 @@
 
+#define F_CPU 4000000UL
 #include <avr/io.h>
+#include <avr/delay.h>
 #include <stdbool.h>
 
 #include "sensors.h"
@@ -16,6 +18,10 @@ int main(void) {
     u8g2_t u8g2;
     
     configure_display(&u8g2);
+    
+    // Bootup logo
+    draw_logo(&u8g2);
+    _delay_ms(2500);
     
     while (1) {
         // Take readings

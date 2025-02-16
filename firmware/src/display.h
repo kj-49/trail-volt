@@ -14,6 +14,7 @@
 
 void configure_display(u8g2_t *u8g2);
 void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state);
+void draw_logo(u8g2_t *u8g2);
 
 #endif	/* DISPLAY_H */
 
