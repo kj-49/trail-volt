@@ -9,7 +9,7 @@
 int main(void) {
     
     // Initialize state with invalid flag true
-    sensor_state_t sensor_state = {2450, 3320, 23, 200, 0};
+    sensor_state_t sensor_state = {0, 0, 0, 0, false};
 
     SYSTEM_Initialize();
 
