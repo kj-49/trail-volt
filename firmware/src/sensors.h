@@ -8,8 +8,7 @@
 #ifndef SENSORS_H
 #define	SENSORS_H
 
-#include "mcc_generated_files/system/system.h"
-#include "mcc_generated_files/adc/adc0.h"
+#include <stdint.h>
 
 typedef struct {
     uint16_t cell_1_voltage_mv;

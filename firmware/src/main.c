@@ -6,14 +6,16 @@
 
 #include "sensors.h"
 #include "display.h"
+#include "adc.h"
 
+void configure();
 
 int main(void) {
     
+    configure();
+    
     // Initialize state with invalid flag true
     sensor_state_t sensor_state = {0, 0, 0, 0, false};
-
-    SYSTEM_Initialize();
 
     u8g2_t u8g2;
     
@@ -31,4 +33,8 @@ int main(void) {
     }
     
     return 0; 
+}
+
+void configure() {
+    ADC0_configure();
 }
