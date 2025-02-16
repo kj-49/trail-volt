@@ -4,8 +4,7 @@
 
 #include "sensors.h"
 #include "display.h"
-#include "mcc_generated_files/system/system.h"
-#include "mcc_generated_files/adc/adc0.h"
+
 
 int main(void) {
     
@@ -19,15 +18,9 @@ int main(void) {
     configure_display(&u8g2);
     
     while (1) {
-        adc_result_t res;
-
-        ADC0_ConversionStart();
-        while (!ADC0_IsConversionDone());
-        res = ADC0_ConversionResultGet();
-        ADC0_ConversionDoneInterruptFlagClear();
-                
-        sensor_state.cell_1_voltage_mv = res / 4;
-        
+        // Take readings
+        update_sensor_state(&sensor_state);
+        // Update display
         update_display(&u8g2, &sensor_state);
     }
     

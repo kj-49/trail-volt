@@ -79,6 +79,7 @@
       <itemPath>avr-common.c</itemPath>
       <itemPath>configuration.c</itemPath>
       <itemPath>display.c</itemPath>
+      <itemPath>sensors.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
