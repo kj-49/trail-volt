@@ -1,9 +1,11 @@
+#define F_CPU 24000000UL
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include "../lib/u8g2.X/u8g2.h"
 #include "../lib/twi.X/twi-host.X/peripherals/TWI/TWI_host.h"
 
-#define F_CPU 24000000UL
+
 
 uint8_t u8x8_byte_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr) {
     static uint8_t buffer[32];
@@ -99,25 +101,15 @@ int main(void) {
     // Set I2C address for the SH1106 display (0x3C or 0x3D depending on the display)
     u8g2_SetI2CAddress(&u8g2, 0x3C << 1);  // Shift left to match 7-bit address format
     u8g2_InitDisplay(&u8g2);
-    _delay_ms(10000);
-    
     u8g2_SetPowerSave(&u8g2, 0);  // Wake up the display
     //u8g2_SetContrast(&u8g2, 128);  // Optional: Set contrast
     
     while (1) {
         u8g2_ClearBuffer(&u8g2);
-        
-        // Draw something
+       
         u8g2_SetFont(&u8g2, u8g2_font_ncenB08_tr);
-        u8g2_DrawStr(&u8g2, 0, 10, "Hello, World!");
-        
-        //u8g2_SendBuffer(&u8g2);
-        //_delay_ms(10);
-
-        u8g2_SetFont(&u8g2, u8g2_font_ncenB08_tr);
-        u8g2_DrawStr(&u8g2, 0, 10, "Hello, Worder!");
+        u8g2_DrawStr(&u8g2, 0, 10, "--|--");
         u8g2_SendBuffer(&u8g2);
-        //_delay_ms(100);
     }
     
     return 0;
