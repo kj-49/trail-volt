@@ -15,7 +15,7 @@ uint8_t u8x8_byte_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_p
 uint8_t u8x8_avr_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
 void draw_logo(u8g2_t *u8g2){
-    static const unsigned char smiley_bits[] U8X8_PROGMEM = {
+    static const unsigned char logo_bits[] U8X8_PROGMEM = {
         // '3', 128x40px
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -61,7 +61,7 @@ void draw_logo(u8g2_t *u8g2){
 
     u8g2_ClearBuffer(u8g2);
 
-    u8g2_DrawXBM(u8g2, 0, 12, 128, 40, smiley_bits);
+    u8g2_DrawXBM(u8g2, 0, 12, 128, 40, logo_bits);
 
     u8g2_SendBuffer(u8g2);
 }
