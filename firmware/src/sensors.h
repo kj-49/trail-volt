@@ -12,6 +12,7 @@ typedef struct {
     uint16_t cell1_voltage;
     uint16_t cell2_voltage;
     uint16_t cell_temperature;
+    uint16_t charge_rate;
     uint8_t values_valid;
 } sensor_state_t;
 
