@@ -3,13 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/adc.h</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/lib/twi.X/twi-host.X/peripherals/TWI/TWI_host.c</file>
             <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/sensors.h</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/configuration.h</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/state.h</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/display.c</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/state.c</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/power.c</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/avr-common.h</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/display.h</file>
+            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/power.h</file>
             <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/main.c</file>
             <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/sensors.c</file>
-            <file>file:/C:/Users/ksjam/Documents/dev/trail-volt/firmware/src/adc.c</file>
         </group>
     </open-files>
 </project-private>
