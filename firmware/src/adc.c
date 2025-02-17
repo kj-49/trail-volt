@@ -9,6 +9,10 @@
 #include <avr/io.h>
 
 void ADC0_configure() {
+    
+    // 2.5V reference
+    VREF.ADC0REF = VREF_REFSEL_2V500_gc;
+    
     // Disable ADC0 module
     ADC0.CTRLA &= ~(ADC_ENABLE_bm);
     // Disable ADC0 interrupts
