@@ -21,6 +21,12 @@ typedef struct {
 
 #define ADC_ACCUMULATION 4
 
+#define CELL_VOLTAGE_DIVIDER_RATIO 0.5
+
+/**
+ * @brief  Updates sensor state based on values taken from ADC0.
+ * @param  sensor_state: A pointer to the application sensor state.
+ */
 void update_sensor_state(sensor_state_t *sensor_state);
 
 #endif	/* SENSORS_H */
