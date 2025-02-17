@@ -79,7 +79,7 @@ void configure_display(u8g2_t *u8g2) {
     u8g2_SetFont(u8g2, u8g2_font_profont10_tr);
 }
 
-void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state) {
+void update_display(u8g2_t *u8g2, const sensor_state_t *sensor_state, volatile const application_state_t *application_state) {
     // Clear the display buffer
     u8g2_ClearBuffer(u8g2);
     
