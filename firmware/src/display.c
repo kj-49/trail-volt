@@ -89,15 +89,15 @@ void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state) {
     
     // Battery dimensions and positions
     uint8_t battery_width = 16;
-    uint8_t battery_height = 40;
+    uint8_t battery_height = 35;
     uint8_t terminal_width = 6;
     uint8_t terminal_height = 3;
     uint8_t battery_spacing = 8;
     uint8_t start_x = 5;
-    uint8_t start_y = 5;
+    uint8_t start_y = 15; // Moved down slightly to fit temperature text above
     
     // Text area for sensor values
-    uint8_t text_start_x = start_x + 2*battery_width + battery_spacing + 8;
+    uint8_t text_start_x = start_x + 2 * battery_width + battery_spacing + 8;
     uint8_t text_start_y = 12;
     uint8_t line_height = 10;
     
@@ -106,7 +106,7 @@ void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state) {
     
     // Draw Battery 1
     u8g2_DrawFrame(u8g2, start_x, start_y + terminal_height, battery_width, battery_height);
-    u8g2_DrawBox(u8g2, start_x + (battery_width - terminal_width)/2, start_y, terminal_width, terminal_height);
+    u8g2_DrawBox(u8g2, start_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height);
     
     // Calculate fill level for Battery 1
     float volt1 = sensor_state->cell_1_voltage_mv / 1000.0;
@@ -123,7 +123,7 @@ void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state) {
     // Draw Battery 2
     uint8_t batt2_x = start_x + battery_width + battery_spacing;
     u8g2_DrawFrame(u8g2, batt2_x, start_y + terminal_height, battery_width, battery_height);
-    u8g2_DrawBox(u8g2, batt2_x + (battery_width - terminal_width)/2, start_y, terminal_width, terminal_height);
+    u8g2_DrawBox(u8g2, batt2_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height);
     
     // Calculate fill level for Battery 2
     float volt2 = sensor_state->cell_2_voltage_mv / 1000.0;
@@ -137,22 +137,39 @@ void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state) {
                 battery_width - 4, 
                 fill_height2);
     
-    // Display voltage readings under respective batteries
+    // Display temperature readings above respective batteries
     char str_buf[16];
+
+    // Battery 1 temperature above first battery
+    snprintf(str_buf, sizeof(str_buf), "%dC", sensor_state->cell_1_temperature_c);
+    uint8_t temp1_width = u8g2_GetStrWidth(u8g2, str_buf);
+    u8g2_DrawStr(u8g2, 
+                start_x + (battery_width - temp1_width) / 2, 
+                start_y - 5,  // Position above the battery
+                str_buf);
+
+    // Battery 2 temperature above second battery
+    snprintf(str_buf, sizeof(str_buf), "%dC", sensor_state->cell_2_temperature_c);
+    uint8_t temp2_width = u8g2_GetStrWidth(u8g2, str_buf);
+    u8g2_DrawStr(u8g2, 
+                batt2_x + (battery_width - temp2_width) / 2, 
+                start_y - 5,  // Position above the battery
+                str_buf);
     
-    // Battery 1 voltage under first battery
+    // Display voltage readings under respective batteries
+    // Battery 1 voltage
     snprintf(str_buf, sizeof(str_buf), "%.2f", volt1);
     uint8_t volt1_width = u8g2_GetStrWidth(u8g2, str_buf);
     u8g2_DrawStr(u8g2, 
-                start_x + (battery_width - volt1_width)/2, 
+                start_x + (battery_width - volt1_width) / 2, 
                 start_y + terminal_height + battery_height + 10, 
                 str_buf);
     
-    // Battery 2 voltage under second battery
+    // Battery 2 voltage
     snprintf(str_buf, sizeof(str_buf), "%.2f", volt2);
     uint8_t volt2_width = u8g2_GetStrWidth(u8g2, str_buf);
     u8g2_DrawStr(u8g2, 
-                batt2_x + (battery_width - volt2_width)/2, 
+                batt2_x + (battery_width - volt2_width) / 2, 
                 start_y + terminal_height + battery_height + 10, 
                 str_buf);
     
@@ -165,16 +182,14 @@ void update_display(u8g2_t *u8g2, sensor_state_t *sensor_state) {
     u8g2_DrawStr(u8g2, text_start_x, y_pos, str_buf);
     y_pos += line_height;
     
-    snprintf(str_buf, sizeof(str_buf), "Temp: %dC", sensor_state->cell_temperature_c);
-    u8g2_DrawStr(u8g2, text_start_x, y_pos, str_buf);
-    y_pos += line_height;
-
-    
     snprintf(str_buf, sizeof(str_buf), "Curr: %dmA", sensor_state->charge_rate_ma);
     u8g2_DrawStr(u8g2, text_start_x, y_pos, str_buf);
     
     u8g2_SendBuffer(u8g2);
 }
+
+
+
 uint8_t u8x8_byte_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr) {
     static uint8_t buffer[32];
     static uint8_t buffer_index;
