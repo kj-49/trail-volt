@@ -51,7 +51,7 @@ void update_sensor_state(sensor_state_t *sensor_state)
 uint16_t read_from_adc(adc_channel_t channel, float voltage_divider_ratio)
 {
     ADC0_select_channel(channel);
-    _delay_us(100);
+    //_delay_us(100);
     ADC0_begin_conversion();
     
     while(!ADC0_conversion_is_done()){};

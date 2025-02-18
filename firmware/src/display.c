@@ -176,6 +176,24 @@ void update_display(u8g2_t *u8g2, const sensor_state_t *sensor_state, volatile c
     // Display other sensor values on the right side
     uint8_t y_pos = text_start_y;
     
+    switch(*application_state) {
+            case STATE_MONITORING:
+                snprintf(str_buf, sizeof(str_buf), "MONITORING");
+                break;
+            case STATE_CHARGING:
+                snprintf(str_buf, sizeof(str_buf), "CHARGING");
+                break;
+            case STATE_SLEEP:
+                snprintf(str_buf, sizeof(str_buf), "SLEEPING");
+            default:
+                break;
+        }
+     
+    u8g2_SetFont(u8g2, u8g2_font_prospero_bold_nbp_tf);
+    u8g2_DrawStr(u8g2, text_start_x, y_pos, str_buf);
+    u8g2_SetFont(u8g2, u8g2_font_profont10_tr);
+    y_pos += line_height;
+    
     // Total voltage
     float avg_volt = (volt1 + volt2) / 2;
     snprintf(str_buf, sizeof(str_buf), "Avg: %.2fV", avg_volt);

@@ -20,6 +20,13 @@ volatile application_state_t application_state = STATE_MONITORING;
 
 int main(void) {
     
+    CCP = 0xd8;
+    CLKCTRL.OSCHFCTRLA = 0x9;
+    while (CLKCTRL.MCLKSTATUS & 0b00000001) {
+        ;
+    }
+    
+    
     configure();
     
     // Initialize state with invalid flag true
