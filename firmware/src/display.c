@@ -176,7 +176,7 @@ void update_display(u8g2_t *u8g2, const sensor_state_t *sensor_state, volatile c
     // Display other sensor values on the right side
     uint8_t y_pos = text_start_y;
     
-    switch(*application_state) {
+    switch(application_state->mode) {
             case STATE_MONITORING:
                 snprintf(str_buf, sizeof(str_buf), "MONITORING");
                 break;
@@ -202,6 +202,11 @@ void update_display(u8g2_t *u8g2, const sensor_state_t *sensor_state, volatile c
     
     snprintf(str_buf, sizeof(str_buf), "Curr: %dmA", sensor_state->charge_rate_ma);
     u8g2_DrawStr(u8g2, text_start_x, y_pos, str_buf);
+    y_pos += line_height;
+    
+    snprintf(str_buf, sizeof(str_buf), "PWM: %d%", application_state->current_duty_cycle);
+    u8g2_DrawStr(u8g2, text_start_x, y_pos, str_buf);
+    y_pos += line_height;
     
     u8g2_SendBuffer(u8g2);
 }

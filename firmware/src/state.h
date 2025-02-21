@@ -12,6 +12,11 @@ typedef enum {
     STATE_SLEEP,
     STATE_CHARGING,
     STATE_MONITORING
+} application_mode_t;
+
+typedef struct {
+    application_mode_t mode;
+    uint16_t current_duty_cycle;
 } application_state_t;
 
 /**

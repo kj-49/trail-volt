@@ -28,7 +28,6 @@
       <itemPath>display.c</itemPath>
       <itemPath>sensors.c</itemPath>
       <itemPath>adc.c</itemPath>
-      <itemPath>state.c</itemPath>
       <itemPath>power.c</itemPath>
       <itemPath>sleep.c</itemPath>
       <itemPath>interrupts.c</itemPath>

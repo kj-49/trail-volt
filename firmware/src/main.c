@@ -23,12 +23,13 @@ void configure();
  * Need global state so that interrupts have access.
  * Volatile is neccessary due to changes made by interrupts that are not known to compiler.
  */
-volatile application_state_t application_state = STATE_SLEEP;
+volatile application_state_t application_state = {STATE_MONITORING, 0};
 
 // Wake up ISR
 ISR(PORTB_PORT_vect) {
     if (PORTB.INTFLAGS & (1 << 0)) {  // Check if interrupt occurred on PB0
-        application_state = STATE_MONITORING;
+        application_state.current_duty_cycle += 10;
+        TCB2_set_duty_cycle(application_state.current_duty_cycle);
     }
     // Clear flags
     PORTB.INTFLAGS = 0xff;
@@ -57,11 +58,10 @@ int main(void) {
     
     while (1) {
         
-        switch(application_state) {
+        switch(application_state.mode) {
             case STATE_MONITORING:
                 /* Start sleep timer */
-                check_update_state(&application_state);
-                
+
                 // Take readings
                 update_sensor_state(&sensor_state);
                 // Update display
@@ -75,7 +75,7 @@ int main(void) {
                 update_display(&u8g2, &sensor_state, &application_state);
                 
                 if (!is_charging()) {
-                    application_state = STATE_MONITORING;
+                    application_state.mode = STATE_MONITORING;
                 }
                 break;
             case STATE_SLEEP:
@@ -98,7 +98,7 @@ void configure() {
     
     // PWM
     TCB2_init_pwm();
-    TCB2_set_duty_cycle(50);
+    TCB2_set_duty_cycle(application_state.current_duty_cycle);
     TCB2_enable();
     
     set_as_input(WAKE_UP);
