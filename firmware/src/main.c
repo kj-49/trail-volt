@@ -1,5 +1,4 @@
 
-#define F_CPU 4000000UL
 #include <avr/io.h>
 #include <avr/delay.h>
 #include <stdbool.h>
@@ -12,9 +11,11 @@
 #include "power.h"
 #include "interrupts.h"
 #include "gpio.h"
+#include "pwm.h"
 
 
 static const gpio_t WAKE_UP = {&PORTB, 0};
+static const gpio_t PWM_OUTPUT = {&PORTC, 0};
 
 void configure();
 
@@ -34,7 +35,7 @@ ISR(PORTB_PORT_vect) {
 }
 
 int main(void) {
-    
+
     CCP = 0xd8;
     CLKCTRL.OSCHFCTRLA = 0x9;
     while (CLKCTRL.MCLKSTATUS & 0b00000001) {
@@ -94,6 +95,11 @@ int main(void) {
 void configure() {
     ADC0_configure();
     configure_interrupts();
+    
+    // PWM
+    TCB2_init_pwm();
+    TCB2_set_duty_cycle(50);
+    TCB2_enable();
     
     set_as_input(WAKE_UP);
 }

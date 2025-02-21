@@ -13,7 +13,7 @@ typedef struct gpio {
     uint8_t pin;
 } gpio_t;
 
-/**
+/*
  * @brief  Sets pin as output.
  * @param  gpio: The pin to set.
  */
@@ -22,7 +22,7 @@ inline void set_as_output(gpio_t gpio)
     gpio.port->DIRSET = (1 << gpio.pin);
 }
 
-/**
+/*
  * @brief  Sets pin as input.
  * @param  gpio: The pin to set.
  */
@@ -31,11 +31,12 @@ inline void set_as_input(gpio_t gpio)
     gpio.port->DIRCLR = (1 << gpio.pin);
 }
 
-/**
+/*
  * @brief  Sets pin as input.
  * @param  gpio: The pin to set.
+ * @return Value of the pin.
  */
-inline bool read_pin(gpio_t gpio)
+inline int read_pin(gpio_t gpio)
 {
     return (gpio.port->IN & (1 << gpio.pin));
 }
