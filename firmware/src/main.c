@@ -11,9 +11,10 @@
 #include "state.h"
 #include "power.h"
 #include "interrupts.h"
+#include "gpio.h"
 
 
-
+static const gpio_t WAKE_UP = {&PORTB, 0};
 
 void configure();
 
@@ -94,5 +95,5 @@ void configure() {
     ADC0_configure();
     configure_interrupts();
     
-    PORTB.DIRCLR = (1 << 0);
+    set_as_input(WAKE_UP);
 }
