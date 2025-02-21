@@ -8,10 +8,17 @@
 #ifndef AVR_COMMON_H
 #define	AVR_COMMON_H
 
+#include <avr/io.h>
+
 typedef enum {
     A,
     D
 } port_t;
+
+typedef struct gpio {
+    PORT_t *port;
+    uint8_t pin;
+} gpio_t;
 
 /*
  * Function:  set_pin_output_value 

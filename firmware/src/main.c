@@ -3,12 +3,17 @@
 #include <avr/io.h>
 #include <avr/delay.h>
 #include <stdbool.h>
+#include <avr/interrupt.h>
 
 #include "sensors.h"
 #include "display.h"
 #include "adc.h"
 #include "state.h"
 #include "power.h"
+#include "interrupts.h"
+
+
+
 
 void configure();
 
@@ -16,7 +21,16 @@ void configure();
  * Need global state so that interrupts have access.
  * Volatile is neccessary due to changes made by interrupts that are not known to compiler.
  */
-volatile application_state_t application_state = STATE_MONITORING;
+volatile application_state_t application_state = STATE_SLEEP;
+
+// Wake up ISR
+ISR(PORTB_PORT_vect) {
+    if (PORTB.INTFLAGS & (1 << 0)) {  // Check if interrupt occurred on PB0
+        application_state = STATE_MONITORING;
+    }
+    // Clear flags
+    PORTB.INTFLAGS = 0xff;
+}
 
 int main(void) {
     
@@ -56,13 +70,14 @@ int main(void) {
                 
                 break;
             case STATE_CHARGING:
-                while (is_charging()) {
-                    
+                update_display(&u8g2, &sensor_state, &application_state);
+                
+                if (!is_charging()) {
+                    application_state = STATE_MONITORING;
                 }
-                application_state = STATE_MONITORING;
                 break;
             case STATE_SLEEP:
-                /* Do nothing */
+                update_display(&u8g2, &sensor_state, &application_state);
                 break;
             default:
                 break;
@@ -74,6 +89,10 @@ int main(void) {
     return 0; 
 }
 
+
 void configure() {
     ADC0_configure();
+    configure_interrupts();
+    
+    PORTB.DIRCLR = (1 << 0);
 }

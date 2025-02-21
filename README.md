@@ -8,6 +8,7 @@
 | D3  | ADC3      | Thermistor Voltage 2               |
 | D4  | ADC4      | Positive Charge Current Terminal   |
 | D5  | ADC5      | Negative Charge Current Terminal   |
+| B0  | INPUT     | Wake up button to exit sleep mode  |
 
 ### Current Measurements
 ```
