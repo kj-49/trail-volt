@@ -62,7 +62,7 @@ void display_draw_logo() {
 void display_init() {
     // Initialize the display
     if (!display.begin(i2c_address, true)) {
-        Serial.println(F("SH1106 allocation failed"));
+        Serial.println("SH1106 allocation failed");
         for (;;); // Don't proceed, loop forever
     }
 
@@ -77,7 +77,11 @@ void display_init() {
     display.setRotation(0);
 }
 
-void display_update(const battery_state_t *battery_state, const charging_state_t *charging_state, mode_e mode) {
+void display_update() {
+
+    battery_state_t battery_state = battery_get_state();
+    charging_state_t charging_state = charging_get_state();
+    mode_e mode = get_mode();
 
     display.clearDisplay();
     
@@ -103,7 +107,7 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
     display.fillRect(start_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height, SH110X_WHITE);
     
     // Calculate fill level for Battery 1
-    float volt1 = battery_state->upper_cell_voltage_v;
+    float volt1 = battery_state.upper_cell_voltage_v;
     uint8_t fill_height1 = (volt1 * battery_height) / max_voltage;
     if (fill_height1 > battery_height) fill_height1 = battery_height;
     
@@ -116,7 +120,7 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
     display.fillRect(batt2_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height, SH110X_WHITE);
     
     // Calculate fill level for Battery 2
-    float volt2 = battery_state->lower_cell_voltage_v;
+    float volt2 = battery_state.lower_cell_voltage_v;
     uint8_t fill_height2 = (volt2 * battery_height) / max_voltage;
     if (fill_height2 > battery_height) fill_height2 = battery_height;
     
@@ -126,12 +130,12 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
     // Display temperature readings above respective batteries
     // Battery 1 temperature above first battery
     display.setCursor(start_x + (battery_width - 14) / 2, start_y - 5);
-    display.print(battery_state->cell_1_temperature_c);
+    display.print(battery_state.cell_1_temperature_c);
     display.print("C");
 
     // Battery 2 temperature above second battery
     display.setCursor(batt2_x + (battery_width - 14) / 2, start_y - 5);
-    display.print(battery_state->cell_2_temperature_c);
+    display.print(battery_state.cell_2_temperature_c);
     display.print("C");
     
     // Display voltage readings under respective batteries
@@ -147,7 +151,7 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
     uint8_t y_pos = text_start_y + 10;
 
     float total_voltage = volt1 + volt2;
-    float percentage_duty_cycle = charging_state->duty_cycle_uint8 * ((float)100/255);
+    float percentage_duty_cycle = charging_state.duty_cycle_uint8 * ((float)100/255);
 
     switch (mode) {
         case MODE_SLEEP:
@@ -172,21 +176,9 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
 
             display.setCursor(text_start_x, y_pos);
             display.print("V-SUP.: ");
-            display.print(charging_state->power_metrics.charge_voltage_v, 2);  // Print average voltage with 2 decimal places
+            display.print(charging_state.power_metrics.charge_voltage_v, 2);  // Print average voltage with 2 decimal places
             display.print("V");
             y_pos += line_height;
-
-            // display->setCursor(text_start_x, y_pos);
-            // display->print("A: ");
-            // display->print(system_state->charging_state.power_metrics.ina_current);
-            // display->print("mA");
-            // y_pos += line_height;
-
-            // display->setCursor(text_start_x, y_pos);
-            // display->print("P: ");
-            // display->print(system_state->charging_state.power_metrics.ina_power);
-            // display->print("W");
-            // y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);
             display.print("Duty Cycle: ");
@@ -195,9 +187,9 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
             y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);
-            if (battery_state->lower_discharging) {
+            if (battery_state.lower_discharging) {
                 display.print("DRAINING LOWER");
-            } else if (battery_state->upper_discharging) {
+            } else if (battery_state.upper_discharging) {
                 display.print("DRAINING UPPER");
             }
             y_pos += line_height;
@@ -220,7 +212,7 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
 
             display.setCursor(text_start_x, y_pos);
             display.print("V-SUP.: ");
-            display.print(charging_state->power_metrics.charge_voltage_v, 2);  // Print average voltage with 2 decimal places
+            display.print(charging_state.power_metrics.charge_voltage_v, 2);  // Print average voltage with 2 decimal places
             display.print("V");
             y_pos += line_height;
 
@@ -231,9 +223,9 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
             y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);
-            if (battery_state->lower_discharging) {
+            if (battery_state.lower_discharging) {
                 display.print("DRAINING LOWER");
-            } else if (battery_state->upper_discharging) {
+            } else if (battery_state.upper_discharging) {
                 display.print("DRAINING UPPER");
             }
             y_pos += line_height;
@@ -261,10 +253,10 @@ void display_update(const battery_state_t *battery_state, const charging_state_t
             y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);
-            if (battery_state->lower_discharging) {
+            if (battery_state.lower_discharging) {
                 display.print("DRAINING LOWER");
                 
-            } else if (battery_state->upper_discharging) {
+            } else if (battery_state.upper_discharging) {
                 display.print("DRAINING UPPER");
             }
             break;

@@ -8,15 +8,13 @@
 #include "battery.h"
 #include "state_manager.h"
 
-#define LOOP_DELAY_MS 10
+#define LOOP_DELAY_MS 0
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(19200);
     Serial.println("Starting.");
-
-    charging_init();
+    
     display_init();
-
     display_draw_logo();
     delay(2500);
 
@@ -28,9 +26,11 @@ void loop() {
 
     state_manager_update_sensors();
     
-    state_manager_update_application_mode();
+    state_manager_update_mode();
 
     state_manager_apply_hardware_updates();
     
-    delay(10);
+    display_update();
+
+    delay(LOOP_DELAY_MS);
 }

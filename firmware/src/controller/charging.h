@@ -53,31 +53,21 @@ void charging_update_state();
 bool is_receiving_charge();
 
 /**
- * @brief  Configures the charging pwm signal.
- */
-void init_pwm();
-
-/**
  * @brief  Adjusts the duty cycle based on the charging status provided.
  * @param  duty_cycle: The duty cycle.
  */
-void set_charging_duty_cycle(uint8_t duty_cycle);
-
-/**
- * @brief  Reads current from INA260.
- */
-void update_power_metrics();
+void charging_set_duty_cycle(uint8_t duty_cycle);
 
 /**
  * @brief  Sets the shutdown pin
  */
-void stop_charging();
+void charging_stop();
 
 /**
  * @brief  Calculates the new duty cycle applied to gate driver input.
  * @return The new calculated PWM duty cycle.
  */
-uint8_t calculate_duty_cycle();
+uint8_t charging_calculate_duty_cycle();
 
 #endif	/* CHARGING_H */
 

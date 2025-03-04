@@ -17,7 +17,7 @@ void state_manager_update_sensors();
 /**
  * @brief  Updates next FSM state based on sensor readings.
  */
-void state_manager_update_application_mode();
+void state_manager_update_mode();
 
 /**
  * @brief  Applies updates to the hardware based on the current system state.

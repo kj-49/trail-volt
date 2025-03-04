@@ -24,11 +24,8 @@ void display_init();
 
 /**
  * @brief  Refreshes the main display.
- * @param  battery_state: A pointer to the battery state.
- * @param  charging_state: A pointer to the battery state.
- * @param  mode_e: The current mode.
  */
-void display_update(const battery_state_t *battery_state, const charging_state_t *charging_state, mode_e mode);
+void display_update();
 
 /**
  * @brief  Displays bootup logo.
