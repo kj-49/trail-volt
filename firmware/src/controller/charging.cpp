@@ -10,10 +10,6 @@
 
 static charging_state_t charging_state;
 static Adafruit_INA260 ina260 = Adafruit_INA260();
-float DUTY_CYCLE_STEP_UINT8;
-float error;
-float alpha; 
-float critical = 1;        // try critical with 1 for now.
 
 void charging_init() {
     if (!ina260.begin()) {
@@ -41,6 +37,8 @@ uint8_t charging_calculate_duty_cycle() {
     uint8_t current_duty_cycle = charging_state.duty_cycle_uint8;
     float current_charging_voltage_v = charging_state.power_metrics.ina_bus_voltage_v;
     
+    float critical = 1;        // try critical with 1 for now.
+
     float voltage_overshoot = current_charging_voltage_v - CHARGING_VOLTAGE_V;
     float error = fabs(voltage_overshoot);
 
@@ -49,17 +47,17 @@ uint8_t charging_calculate_duty_cycle() {
         return current_duty_cycle;
     }
 
-    alpha = 1.0 + (K * log(error / critical));        // by default log function uses base e
+    float alpha = 1.0 + (K * log(error / critical));        // by default log function uses base e
     if(alpha < 0) {        // clamp alpha to zero, if alpha <0
         alpha = 0;
     }
-    DUTY_CYCLE_STEP_UNIT8 = pow(error,alpha) + 1.0;
+    float duty_cycle_step_uint8 = pow(error,alpha) + 1.0;
     if (voltage_overshoot > 0) {
         // Decrease duty cycle -> decrease voltage
-        return constrain(current_duty_cycle - DUTY_CYCLE_STEP_UINT8, 0, 255);
+        return constrain(current_duty_cycle - duty_cycle_step_uint8, 0, 255);
     } else {
         // Increase duty cycle -> increase voltage
-        return constrain(current_duty_cycle + DUTY_CYCLE_STEP_UINT8, 0, 255);
+        return constrain(current_duty_cycle + duty_cycle_step_uint8, 0, 255);
     }
 }
 
