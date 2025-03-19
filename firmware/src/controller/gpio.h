@@ -15,8 +15,10 @@ const int LOWER_CELL_ADC_PIN = A3;
 
 // A4 & A5 are used for I2C  
 
+const int MPPT_VOLTAGE_PIN = A7;
+
 /* A6 not functional on current board */
-const int CHARGE_VOLTAGE_PIN = A7;
+// const int CHARGE_VOLTAGE_PIN = A7;     Using MPPT Voltage Pin for a7
 
 /* BROKEN */
 const int SWITCH_1_PIN = 1;
@@ -26,6 +28,9 @@ const int BTN_2_PIN = 2;
 
 /* Supplying enable (ON by default now)  */
 const int BTN_1_PIN = 3;
+
+/* Load side PWM duty cycle pin */
+const int LOAD_PWM = 10;
 
 /* Fed into the shutdown pin for our gate driver. Is active low. */
 const int H_BRIDGE_SHUT_DOWN_PIN_AL = 5;
