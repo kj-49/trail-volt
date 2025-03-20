@@ -15,10 +15,12 @@ const int LOWER_CELL_ADC_PIN = A3;
 
 // A4 & A5 are used for I2C  
 
+/* A6 not functional on current board */
+
+/* A7 MPPT output ADC node. */
 const int MPPT_VOLTAGE_PIN = A7;
 
-/* A6 not functional on current board */
-// const int CHARGE_VOLTAGE_PIN = A7;     Using MPPT Voltage Pin for a7
+
 
 /* BROKEN */
 const int SWITCH_1_PIN = 1;

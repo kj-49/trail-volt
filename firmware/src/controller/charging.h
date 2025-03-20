@@ -30,16 +30,16 @@ typedef struct {
 } power_metrics_t;
 
 typedef struct {
-  bool is_charging;
-  bool is_faulty;
-  uint8_t duty_cycle_uint8;
-  power_metrics_t power_metrics;
-} charging_state_t;
-
-typedef struct {
   uint8_t duty_mppt;
   uint8_t duty_load;
-} duty_cycles;
+} duty_cycles_t;
+
+typedef struct {
+  bool is_charging;
+  bool is_faulty;
+  duty_cycles_t duty_cycles;
+  power_metrics_t power_metrics;
+} charging_state_t;
 
 /**
  * @brief  Initialize charging.
@@ -64,21 +64,15 @@ void charging_update_state();
 bool charging_is_enabled();
 
 /**
- * @brief  Adjusts the duty cycle based on the charging status provided.
- * @param  duty_cycle: The duty cycle.
+ * @brief  Adjusts the charging duty cycles based on the charging status provided.
+ * @param  duty_cyles: The new duty cycles.
  */
-void charging_set_duty_cycle(struct duty);
+void charging_set_duty_cycles(duty_cycles_t duty_cyles);
 
 /**
  * @brief  Sets the shutdown pin
  */
 void charging_stop();
-
-/**
- * @brief  Calculates the new duty cycle applied to gate driver input.
- * @return The new calculated PWM duty cycle.
- */
-void charging_calculate_duty_cycle();
 
 /**
  * @brief  Determines whether the charging current is within the allowable limits.
