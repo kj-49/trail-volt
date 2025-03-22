@@ -102,11 +102,3 @@ bool charging_current_within_limits() {
 
     return in_limits;
 }
-
-bool charging_is_enabled() {
-    int charge_enable_switch = digitalRead(BTN_2_PIN);
-    if (charge_enable_switch == HIGH) {
-        return true;
-    }
-    return false;
-}
