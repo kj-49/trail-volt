@@ -1,4 +1,3 @@
-
 #include "gpio.h"
 #include <Arduino.h>
 
@@ -9,8 +8,8 @@ void gpio_init() {
     pinMode(TOTAL_CELL_ADC_PIN, INPUT);
     pinMode(LOWER_CELL_ADC_PIN, INPUT);
 
-    pinMode(ENCODER_SW_PIN, INPUT_PULLUP);
     pinMode(ENCODER_DT_PIN, INPUT);
+    pinMode(ENCODER_SW_PIN, INPUT_PULLUP);
     pinMode(ENCODER_CLK_PIN, INPUT);
 
     // Keep pin high by default (shutdown off)

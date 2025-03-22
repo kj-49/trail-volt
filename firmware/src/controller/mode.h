@@ -15,6 +15,3 @@ mode_e get_mode();
 void set_mode(mode_e mode);
 
 #endif	/* APPLICATION_H */
-
-
-

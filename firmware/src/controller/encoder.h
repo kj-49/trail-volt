@@ -1,17 +1,11 @@
 #ifndef ENCODER_H
 #define	ENCODER_H
 
-typedef struct {
-  bool clk;
-  bool dt;
-  bool sw;
-} encoder_state_t;
-
 typedef enum {
-  ENCODER_EVENT_BUTTON_PRESS,
-  ENCODER_EVENT_CLOCKWISE,
-  ENCODER_EVENT_COUNTERCLOCKWISE,
-  ENCODER_EVENT_NONE,
+  ENCODER_EVENT_BUTTON_PRESS = 0,
+  ENCODER_EVENT_CLOCKWISE = 1,
+  ENCODER_EVENT_COUNTERCLOCKWISE = 2,
+  ENCODER_EVENT_NONE = 3,
 } encoder_event_e;
 
 /**
@@ -20,12 +14,19 @@ typedef enum {
 void encoder_init();
 
 /**
- * @brief  Determines if any encoder events have occurs based on the
- *         current and previous encoder values.
+ * @brief  Gets the last encoder event.
  * @return The encoder event type.
  */
 encoder_event_e encoder_get_event();
 
+/**
+ * @brief  Handles the clk rising interrupt.
+ */
+void encoder_handle_clk_rising();
+/**
+ * @brief  Handles the button press interrupt.
+ */
+void encoder_handle_btn_press();
 
 #endif /* ENCODER_H */
 

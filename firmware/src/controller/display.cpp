@@ -6,6 +6,7 @@
 #include "Fonts/GFX_fonts/Font5x7FixedMono.h"
 #include "Fonts/FreeSansBold6pt7b.h"
 #include "debug.h"
+#include "menu.h"
 
 static Adafruit_SH1106G display = Adafruit_SH1106G(DISP_WIDTH, DISP_HEIGHT, &Wire, OLED_RESET);
 
@@ -67,7 +68,6 @@ void display_init() {
         for (;;); // Don't proceed, loop forever
     }
 
-    // Clear the buffer
     display.clearDisplay();
 
     // Set the font
@@ -287,6 +287,33 @@ void display_update() {
                 display.print("DRAINING UPPER");
             }
             break;
+        case MODE_MENU: {
+            mode_e selected_mode = menu_get_selected_state();
+
+            display.clearDisplay();
+
+            display.setFont(&FreeSansBold6pt7b);
+            int textHeight = 12;
+            int startX = (DISP_WIDTH - 48) / 2;
+            int startY = (DISP_HEIGHT - (textHeight * 2)) / 2;
+
+
+            if (selected_mode == MODE_RECEIVING) {
+                display.setCursor(startX - 12, startY - 1);
+                display.print("> "); // Marker to indicate selection
+            }
+            display.setCursor(startX, startY);
+            display.print("RECEIVE");
+
+            if (selected_mode == MODE_SUPPLYING) {
+              display.setCursor(startX - 12, startY + textHeight + 8);
+                display.print("> "); // Marker to indicate selection
+            }
+            display.setCursor(startX, startY + textHeight + 10); 
+            display.print("SUPPLY");
+
+            display.display();
+        }
         default:
             break;
     }

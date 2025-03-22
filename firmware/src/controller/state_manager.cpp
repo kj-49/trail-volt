@@ -41,6 +41,11 @@ void state_manager_update_mode() {
                 next_mode = MODE_CHARGING_FAULT;
                 break;
             }
+            // If no crucial tasks need to be taken, listen for user input
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+              // Button press indicates the user would to be presented the menu
+              next_mode = MODE_MENU;
+            }
             break;
         case MODE_CHARGING_FAULT:
             if (!charging_state.is_over_current) {
@@ -52,8 +57,13 @@ void state_manager_update_mode() {
                 next_mode = MODE_BALANCING;
                 break;
             }
+            // If no crucial tasks need to be taken, listen for user input
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+              // Button press indicates the user would to be presented the menu
+              next_mode = MODE_MENU;
+            }
             break;
-        case MODE_MONITORING:
+        case MODE_MONITORING: {
             if (needs_balancing) {
                 next_mode = MODE_BALANCING;
                 break;
@@ -64,6 +74,7 @@ void state_manager_update_mode() {
               next_mode = MODE_MENU;
             }
             break;
+        }
         case MODE_BALANCING:
             if (!needs_balancing) {
                 next_mode = MODE_MONITORING;
@@ -86,7 +97,9 @@ void state_manager_update_mode() {
             next_mode = MODE_MONITORING;
             break;
     }
-
+    if (next_mode != current_mode) {
+      Serial.print("Mode switch to:");Serial.println(next_mode);
+    }
     set_mode(next_mode);   
 }
 

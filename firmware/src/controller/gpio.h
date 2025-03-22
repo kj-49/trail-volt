@@ -18,11 +18,11 @@ const int LOWER_CELL_ADC_PIN = A3;
 /* A6 not functional on current board */
 const int CHARGE_VOLTAGE_PIN = A7;
 
-/* Rotary encoder button pin. */
-const int ENCODER_SW_PIN = 1;
-
 /* Rotary encoder dt pin. */
-const int ENCODER_DT_PIN = 2;
+const int ENCODER_DT_PIN = 1;
+
+/* Rotary encoder button pin. */
+const int ENCODER_SW_PIN = 2;
 
 /* Rotary encoder clock pin. */
 const int ENCODER_CLK_PIN = 3;

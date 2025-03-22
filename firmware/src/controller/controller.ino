@@ -8,6 +8,7 @@
 #include "battery.h"
 #include "state_manager.h"
 #include "encoder.h"
+#include "interrupt.h"
 
 #define LOOP_DELAY_MS 10
 
@@ -20,6 +21,7 @@ void setup() {
     charging_init();
     encoder_init();
     state_manager_init();
+    interrupt_attach_encoder();
 
     display_init();
     display_draw_logo();
