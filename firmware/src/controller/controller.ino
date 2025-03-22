@@ -5,10 +5,9 @@
 #include "mode.h"
 #include "charging.h"
 #include "gpio.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_SH110X.h>
 #include "battery.h"
 #include "state_manager.h"
+#include "encoder.h"
 
 #define LOOP_DELAY_MS 10
 
@@ -19,6 +18,7 @@ void setup() {
 
     gpio_init();
     charging_init();
+    encoder_init();
     state_manager_init();
 
     display_init();

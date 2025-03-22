@@ -1,12 +1,12 @@
 #include "encoder.h"
 #include "gpio.h"
 
-static encoder_state_t encoder_state = {0, 0, 0};
+static encoder_state_t encoder_state;
 
 /**
  * @brief  Updates the encoder state based on the current encoder inputs.
  */
-static void encoder_update_state() {
+static void update_state() {
     int sw = digitalRead(ENCODER_SW_PIN);
     int clk = digitalRead(ENCODER_CLK_PIN);
     int dt = digitalRead(ENCODER_DT_PIN);
@@ -16,10 +16,14 @@ static void encoder_update_state() {
     encoder_state.dt = dt;
 }
 
+void encoder_init() {
+    update_state();
+}
+
 encoder_event_e encoder_get_event() {
 
     encoder_state_t previous_state = encoder_state;
-    encoder_update_state();
+    update_state();
     encoder_state_t current_state = encoder_state;
 
     // Prioritize button presses

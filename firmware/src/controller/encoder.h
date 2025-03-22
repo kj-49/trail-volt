@@ -15,6 +15,11 @@ typedef enum {
 } encoder_event_e;
 
 /**
+ * @brief  Initializes encoder state.
+ */
+void encoder_init();
+
+/**
  * @brief  Determines if any encoder events have occurs based on the
  *         current and previous encoder values.
  * @return The encoder event type.
