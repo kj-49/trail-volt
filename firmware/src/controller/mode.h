@@ -8,12 +8,10 @@ typedef enum {
   MODE_SUPPLYING = 3,
   MODE_MONITORING = 4,
   MODE_BALANCING = 5,
+  MODE_MENU = 6,
 } mode_e;
 
-mode_e get_mode();
-void set_mode(mode_e mode);
+mode_e mode_get();
+void mode_set(mode_e mode);
 
 #endif	/* APPLICATION_H */
-
-
-
