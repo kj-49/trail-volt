@@ -9,7 +9,7 @@
 #include "menu.h"
 
 void state_manager_init() {
-    set_mode(MODE_MONITORING);
+    mode_set(MODE_MONITORING);
 }
 
 /**
@@ -28,7 +28,7 @@ void state_manager_update_mode() {
     bool needs_balancing = battery_balancing_needed();
     
     // Initialize next mode to current mode
-    mode_e current_mode = get_mode();
+    mode_e current_mode = mode_get();
     mode_e next_mode = current_mode;
 
     switch (current_mode) {
@@ -98,7 +98,7 @@ void state_manager_update_mode() {
             break;
     }
 
-    set_mode(next_mode);   
+    mode_set(next_mode);   
 }
 
 /**
@@ -112,7 +112,7 @@ void state_manager_apply_hardware_updates() {
     
     battery_state_t battery_state = battery_get_state();
     charging_state_t charging_state = charging_get_state();
-    mode_e current_mode = get_mode();
+    mode_e current_mode = mode_get();
 
     switch (current_mode) {
         case MODE_BALANCING: 

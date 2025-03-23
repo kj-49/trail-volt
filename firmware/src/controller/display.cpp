@@ -80,7 +80,7 @@ void display_update() {
 
     battery_state_t battery_state = battery_get_state();
     charging_state_t charging_state = charging_get_state();
-    mode_e mode = get_mode();
+    mode_e mode = mode_get();
 
     display.clearDisplay();
     

@@ -11,7 +11,7 @@ typedef enum {
   MODE_MENU = 6,
 } mode_e;
 
-mode_e get_mode();
-void set_mode(mode_e mode);
+mode_e mode_get();
+void mode_set(mode_e mode);
 
 #endif	/* APPLICATION_H */
