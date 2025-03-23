@@ -97,9 +97,7 @@ void state_manager_update_mode() {
             next_mode = MODE_MONITORING;
             break;
     }
-    if (next_mode != current_mode) {
-      Serial.print("Mode switch to:");Serial.println(next_mode);
-    }
+
     set_mode(next_mode);   
 }
 
