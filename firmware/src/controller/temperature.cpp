@@ -3,7 +3,7 @@
 
 float get_resistance(int pin)
 {
-    float voltage = read_from_adc(pin, THERMISTOR_ADC_DIVISION);
+    float voltage = adc_read(pin, THERMISTOR_ADC_DIVISION);
 
     float drop;
     if (IS_HIGH_SIDE) {
