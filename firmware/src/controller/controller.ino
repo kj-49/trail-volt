@@ -12,7 +12,8 @@
 
 #define LOOP_DELAY_MS 10
 
-void setup() {
+void setup()
+{
     D_SerialBegin(9600);
     delay(1000);
     D_printlnf("Starting.");
@@ -28,7 +29,8 @@ void setup() {
     delay(2500);
 }
 
-void loop() {
+void loop() 
+{
     // Update the application state (take ADC readings etc)
     state_manager_update_sensors();
     // Determine the next FSM state based on the new updated state

@@ -10,8 +10,8 @@
 
 static Adafruit_SH1106G display = Adafruit_SH1106G(DISP_WIDTH, DISP_HEIGHT, &Wire, OLED_RESET);
 
-void display_draw_logo() {
-    // Define the logo bitmap
+void display_draw_logo()
+{
     static const unsigned char PROGMEM logo_bits[] = {
         // '3', 128x40px
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -61,44 +61,41 @@ void display_draw_logo() {
     display.display();
 }
 
-void display_init() {
-    // Initialize the display
+void display_init()
+{
     if (!display.begin(i2c_address, true)) {
         D_printlnf("SH1106 allocation failed");
-        for (;;); // Don't proceed, loop forever
+        for (;;);
     }
 
     display.clearDisplay();
 
-    // Set the font
     display.setFont(&Font5x5Fixed);
     display.setTextColor(SH110X_WHITE);
     display.setRotation(0);
 }
 
-void display_update() {
-
+void display_update()
+{
     battery_state_t battery_state = battery_get_state();
     charging_state_t charging_state = charging_get_state();
     mode_e mode = mode_get();
 
     display.clearDisplay();
     
-    // Battery dimensions and positions
     uint8_t battery_width = 16;
     uint8_t battery_height = 35;
     uint8_t terminal_width = 6;
     uint8_t terminal_height = 3;
     uint8_t battery_spacing = 8;
     uint8_t start_x = 0;
-    uint8_t start_y = 10; // Moved down slightly to fit temperature text above
+    uint8_t start_y = 10; // Moved down slightly to fit voltage text above
     
     // Text area for sensor values
     uint8_t text_start_x = start_x + 2 * battery_width + battery_spacing + 8;
     uint8_t text_start_y = 0;
     uint8_t line_height = 8;
     
-    // Maximum battery voltage
     float max_voltage = 4.2;
     
     // Draw Battery 1

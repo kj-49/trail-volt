@@ -3,12 +3,14 @@
 
 #define ADC_SAMPLES 10
 
-float adc_to_v(uint16_t adc_value, float voltage_divider_ratio) {
+float adc_to_v(uint16_t adc_value, float voltage_divider_ratio)
+{
     float voltage = (adc_value * (float)ADC_VREF) / 1023;
     return voltage * voltage_divider_ratio;
 }
 
-float read_from_adc(int pin, float voltage_divider_ratio) {
+float read_from_adc(int pin, float voltage_divider_ratio)
+{
     uint32_t total = 0;
 
     for (int i = 0; i < ADC_SAMPLES; i++) {

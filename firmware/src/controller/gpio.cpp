@@ -1,7 +1,8 @@
 #include "gpio.h"
 #include <Arduino.h>
 
-void gpio_init() {
+void gpio_init()
+{
     pinMode(THERMISTOR_1_PIN, INPUT);
     pinMode(THERMISTOR_2_PIN, INPUT);
 

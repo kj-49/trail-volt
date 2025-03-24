@@ -2,10 +2,12 @@
 #include <Arduino.h>
 #include "gpio.h"
 
-bool supplying_disable() {
+bool supplying_disable()
+{
     digitalWrite(USB_ENABLE_PIN, LOW);
 }
 
-bool supplying_enable() {
+bool supplying_enable()
+{
     digitalWrite(USB_ENABLE_PIN, HIGH);
 }

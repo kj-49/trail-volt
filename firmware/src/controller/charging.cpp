@@ -11,7 +11,8 @@
 static charging_state_t charging_state;
 static Adafruit_INA260 ina260 = Adafruit_INA260();
 
-void charging_init() {
+void charging_init() 
+{
     if (!ina260.begin()) {
         D_printlnf("Couldn't find INA260");
         while (1);
@@ -20,11 +21,13 @@ void charging_init() {
     }
 }
 
-charging_state_t charging_get_state() {
+charging_state_t charging_get_state()
+{
     return charging_state;
 }
 
-void charging_update_state() {
+void charging_update_state()
+{
     charging_state.power_metrics.ina_bus_voltage_v = ina260.readBusVoltage() / (float)1000;
     charging_state.power_metrics.ina_current_ma = ina260.readCurrent();
     charging_state.power_metrics.ina_power_w = ina260.readPower() / (float)1000;
@@ -33,11 +36,12 @@ void charging_update_state() {
     charging_state.is_over_current = !charging_current_within_limits();
 }
 
-uint8_t charging_calculate_duty_cycle() {
+uint8_t charging_calculate_duty_cycle()
+{
     uint8_t current_duty_cycle = charging_state.duty_cycle_uint8;
     float current_charging_voltage_v = charging_state.power_metrics.ina_bus_voltage_v;
     
-    float critical = 1;        // try critical with 1 for now.
+    float critical = 1;
 
     float voltage_overshoot = current_charging_voltage_v - CHARGING_VOLTAGE_V;
     float error = fabs(voltage_overshoot);
@@ -47,7 +51,7 @@ uint8_t charging_calculate_duty_cycle() {
         return current_duty_cycle;
     }
 
-    float alpha = 1.0 + (K * log(error / critical));        // by default log function uses base e
+    float alpha = 1.0 + (K * log(error / critical));
     if(alpha < 0) {        // clamp alpha to zero, if alpha <0
         alpha = 0;
     }
@@ -67,17 +71,20 @@ uint8_t charging_calculate_duty_cycle() {
     }
 }
 
-void charging_set_duty_cycle(uint8_t duty_cycle) {
+void charging_set_duty_cycle(uint8_t duty_cycle)
+{
     uint8_t sanitized_duty_cycle = constrain(duty_cycle, 0, 255);
     analogWrite(CHARGE_PWM_PIN, sanitized_duty_cycle);
     charging_state.duty_cycle_uint8 = sanitized_duty_cycle;
 }
 
-bool is_receiving_charge() {
+bool is_receiving_charge()
+{
     return true;
 }
 
-void charging_set_shutdown_pin(bool shutdown) {
+void charging_set_shutdown_pin(bool shutdown)
+{
     if (shutdown) {
         pinMode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
         digitalWrite(H_BRIDGE_SHUT_DOWN_PIN_AL, LOW);
@@ -86,7 +93,8 @@ void charging_set_shutdown_pin(bool shutdown) {
     }
 }
 
-void charging_stop() {
+void charging_stop()
+{
     // Pull shut-down pin low on gate driver
     charging_set_shutdown_pin(true);
 
@@ -97,7 +105,8 @@ void charging_stop() {
     return;
 }
 
-bool charging_current_within_limits() {
+bool charging_current_within_limits()
+{
     bool in_limits = (charging_state.power_metrics.ina_current_ma < MAX_CHARGE_CURRENT_A);
 
     return in_limits;
