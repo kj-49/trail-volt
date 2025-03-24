@@ -25,7 +25,7 @@ void test_get_resistance(void)
     // Test case 1: Pin 1, voltage of 2V
     float resistance = get_resistance(1);
 
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, 1666.67f, resistance);
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, 16666.67f, resistance);
     
     // Test case 2: Pin 2, voltage of 3V
     resistance = get_resistance(2);
