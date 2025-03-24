@@ -1,0 +1,35 @@
+name: Run Tests
+
+on: 
+  push:
+    branches:
+      - unit-test
+  pull_request:
+    branches:
+      - unit-test
+jobs:
+  build:
+    runs-on: ubuntu-latest  # GitHub-hosted runner with Ubuntu
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create output directory
+        run: |
+          # Create the output directory if it doesn't exist
+          mkdir -p "${GITHUB_WORKSPACE}/firmware/test/output"
+
+      - name: Build Unity Test Executable
+        run: |
+          # Build the test executable using GCC
+          g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/temperature_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/temperature.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
+
+      - name: Run Unity Tests
+        run: |
+          # Run the tests
+          "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
