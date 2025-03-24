@@ -35,9 +35,9 @@ void battery_set_lower_discharge(bool discharge)
 
 void battery_update_state()
 {
-    float total_voltage = read_from_adc(TOTAL_CELL_ADC_PIN, TOTAL_CELL_ADC_DIVISION);
+    float total_voltage = adc_read(TOTAL_CELL_ADC_PIN, TOTAL_CELL_ADC_DIVISION);
 
-    battery_state.lower_cell_voltage_v = read_from_adc(LOWER_CELL_ADC_PIN, LOWER_CELL_ADC_DIVISION);
+    battery_state.lower_cell_voltage_v = adc_read(LOWER_CELL_ADC_PIN, LOWER_CELL_ADC_DIVISION);
     battery_state.upper_cell_voltage_v = total_voltage - battery_state.lower_cell_voltage_v;
 
     battery_state.series_temperature_c = temperature_get_series_reading();
