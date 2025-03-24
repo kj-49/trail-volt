@@ -10,6 +10,11 @@
 #include "gpio.h"
 
 /**
+ * @brief  Gets the resistance assuming the given pin is an adc for a given thermistor.
+ */
+float get_resistance(int pin);
+
+/**
  * @brief  Gets the temperature from the thermistor attached the common series connection.
  * @return The temperature in C.
  */

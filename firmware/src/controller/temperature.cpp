@@ -13,6 +13,8 @@ float get_resistance(int pin)
     }
 
     float resistance = (5.0f * SERIES_RESISTOR) / drop;
+
+    return resistance;
 }
 
 float temperature_get_series_reading()

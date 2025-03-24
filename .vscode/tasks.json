@@ -11,8 +11,9 @@
                 "-I../../lib/unity",
                 "-I../src",
                 "${workspaceFolder}/firmware/test/temperature_tests.cpp",
+                "${workspaceFolder}/firmware/src/controller/temperature.cpp",
                 "${workspaceFolder}/firmware/test/unity/unity.c",
-                "-o", 
+                "-o",
                 "${workspaceFolder}/firmware/test/output/temperature_tests.exe"
             ],
             "group": {
