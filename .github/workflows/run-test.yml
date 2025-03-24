@@ -1,0 +1,38 @@
+name: Run Tests
+
+on: 
+  push:
+    branches:
+      - unit-test-workflow
+  pull_request:
+    branches:
+      - unit-test-workflow
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Cygwin
+        uses: actions/setup-cygwin@v1
+        with:
+          cygwin_version: 'latest'
+
+      - name: Install Dependencies (Cygwin)
+        run: |
+          cygwin-setup.exe -q -P gcc-core,make
+
+      - name: Build Unity Test Executable
+        run: |
+          C:/cygwin64/bin/g++.exe -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/temperature_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/temperature.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
+
+      - name: Run Unity Tests
+        run: |
+          "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
