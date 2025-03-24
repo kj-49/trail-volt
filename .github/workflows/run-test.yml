@@ -15,6 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Create output directory
+        run: |
+          # Create the output directory if it doesn't exist
+          mkdir -p "${GITHUB_WORKSPACE}/firmware/test/output"
+
       - name: Build Unity Test Executable
         run: |
           # Build the test executable using GCC
