@@ -1,5 +1,6 @@
 #include "encoder.h"
 #include "gpio.h"
+#include <Arduino.h>
 
 static encoder_event_e pending_event;
 

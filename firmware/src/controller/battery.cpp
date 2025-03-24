@@ -3,6 +3,7 @@
 #include "adc.h"
 #include <math.h>
 #include "temperature.h"
+#include <Arduino.h>
 
 static battery_state_t battery_state;
 
