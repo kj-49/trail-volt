@@ -7,27 +7,23 @@ on:
   pull_request:
     branches:
       - unit-test-workflow
-
 jobs:
   build:
-    runs-on: windows-latest
-    
+    runs-on: windows-latest  # GitHub-hosted runner with Windows OS
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Cygwin
-        uses: actions/setup-cygwin@v1
-        with:
-          cygwin_version: 'latest'
-
-      - name: Install Dependencies (Cygwin)
+      - name: Set up MinGW-w64
         run: |
-          cygwin-setup.exe -q -P gcc-core,make
+          # Install MinGW-w64 (GCC toolchain for Windows)
+          choco install mingw
 
       - name: Build Unity Test Executable
         run: |
-          C:/cygwin64/bin/g++.exe -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          # Build the test executable using MinGW GCC
+          C:/ProgramData/chocolatey/bin/g++.exe -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
           "${GITHUB_WORKSPACE}/firmware/test/temperature_tests.cpp" \
           "${GITHUB_WORKSPACE}/firmware/src/controller/temperature.cpp" \
           "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
@@ -35,4 +31,5 @@ jobs:
 
       - name: Run Unity Tests
         run: |
+          # Run the tests
           "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
