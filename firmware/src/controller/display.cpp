@@ -123,24 +123,20 @@ void display_update()
     // Draw fill level
     display.fillRect(batt2_x + 2, start_y + terminal_height + battery_height - fill_height2, battery_width - 4, fill_height2, SH110X_WHITE);
     
-    /* Need to adjust temperature reading posistions, as they are not directly attached to individual cells */
+    // Draw voltage levels above cells
+    display.setCursor(start_x + (battery_width - 14) / 2, start_y - 5);
+    display.print(volt1, 2);
 
-    // display.setCursor(start_x + (battery_width - 14) / 2, start_y - 5);
-    // display.print(battery_state.upper_cell_temperature_c);
-    // display.print("C");
-
-    // display.setCursor(batt2_x + (battery_width - 14) / 2, start_y - 5);
-    // display.print(battery_state.lower_cell_temperature_c);
-    // display.print("C");
+    display.setCursor(batt2_x + (battery_width - 14) / 2, start_y - 5);
+    display.print(volt2, 2);
     
-    // Display voltage readings under respective batteries
-    // Battery 1 voltage
+    // Series connection temperature
     display.setCursor(start_x + (battery_width - 15) / 2, start_y + terminal_height + battery_height + 10);
-    display.print(volt1, 2);  // Print voltage with 2 decimal places
+    display.print(battery_state.series_temperature_c, 1);display.print("C");
     
-    // Battery 2 voltage
+    // Ground connection temperature
     display.setCursor(batt2_x + (battery_width - 15) / 2, start_y + terminal_height + battery_height + 10);
-    display.print(volt2, 2);  // Print voltage with 2 decimal places
+    display.print(battery_state.ground_temperature_c, 1);display.print("C");
 
     // Display other sensor values on the right side
     uint8_t y_pos = text_start_y + 10;

@@ -1,11 +1,10 @@
 #ifndef TEMPERATURE_H
 #define	TEMPERATURE_H
 
-#define THERMISTOR_BETA_VALUE 3428 // For temperatures up to ~80°C
 #define IS_HIGH_SIDE 1
 #define SERIES_RESISTOR 10000.0f
 
-#define THERMISTOR_ADC_DIVISION 4
+#define THERMISTOR_ADC_DIVISION 1
 
 #include "gpio.h"
 
