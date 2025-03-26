@@ -132,11 +132,11 @@ void display_update()
     
     // Series connection temperature
     display.setCursor(start_x + (battery_width - 15) / 2, start_y + terminal_height + battery_height + 10);
-    display.print(battery_state.series_temperature_c, 2);
+    display.print(battery_state.series_temperature_c, 1);display.print("C");
     
     // Ground connection temperature
     display.setCursor(batt2_x + (battery_width - 15) / 2, start_y + terminal_height + battery_height + 10);
-    display.print(battery_state.ground_temperature_c, 2);
+    display.print(battery_state.ground_temperature_c, 1);display.print("C");
 
     // Display other sensor values on the right side
     uint8_t y_pos = text_start_y + 10;
