@@ -2,13 +2,13 @@
 #define	MODE_H
 
 typedef enum {
-  MODE_SLEEP = 0,
   MODE_RECEIVING = 1,
   MODE_CHARGING_FAULT = 2,
   MODE_SUPPLYING = 3,
   MODE_MONITORING = 4,
   MODE_BALANCING = 5,
-  MODE_MENU = 6,
+  MODE_BATTERY_OVERTEMP = 6,
+  MODE_MENU = 7,
 } mode_e;
 
 mode_e mode_get();

@@ -32,6 +32,10 @@ void state_manager_update_mode()
 
     switch (current_mode) {
         case MODE_RECEIVING:
+            if (!battery_in_charge_temp_range()) {
+                next_mode = MODE_BATTERY_OVERTEMP;
+                break;
+            }
             if (needs_balancing) {
                 next_mode = MODE_BALANCING;
                 break;
@@ -54,8 +58,6 @@ void state_manager_update_mode()
             /*
              * In the event of a charging fault, require manual intervention.
              */
-
-            // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
@@ -63,6 +65,10 @@ void state_manager_update_mode()
             }
             break;
         case MODE_SUPPLYING:
+            if (!battery_in_discharge_temp_range()) {
+                next_mode = MODE_BATTERY_OVERTEMP;
+                break;
+            }
             if (needs_balancing) {
                 next_mode = MODE_BALANCING;
                 break;
@@ -86,9 +92,23 @@ void state_manager_update_mode()
             break;
         }
         case MODE_BALANCING:
+            if (!battery_in_discharge_temp_range()) {
+                next_mode = MODE_BATTERY_OVERTEMP;
+                break;
+            }
             if (!needs_balancing) {
                 next_mode = MODE_MONITORING;
                 break;
+            }
+            break;
+        case MODE_BATTERY_OVERTEMP:
+            /*
+             * In the event of battery overtemperature, require manual intervention.
+             */
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+              // Button press indicates the user would to be presented the menu
+              next_mode = MODE_MENU;
+              break;
             }
             break;
         // Very imporant to declare new scope here
@@ -154,6 +174,12 @@ void state_manager_apply_hardware_updates()
             battery_set_lower_discharge(false);
             break;
         case MODE_MONITORING:
+            charging_stop();
+            supplying_disable();
+            battery_set_upper_discharge(false);
+            battery_set_lower_discharge(false);
+            break;
+        case MODE_BATTERY_OVERTEMP:
             charging_stop();
             supplying_disable();
             battery_set_upper_discharge(false);
