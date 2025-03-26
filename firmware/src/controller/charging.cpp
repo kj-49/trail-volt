@@ -96,7 +96,6 @@ void charging_stop()
     // As an extra step, set duty cycle to 0
     charging_set_duty_cycle(0);
 
-    charging_state.is_charging = false;
     return;
 }
 

@@ -40,6 +40,10 @@ void state_manager_update_mode()
                 next_mode = MODE_CHARGING_FAULT;
                 break;
             }
+            if (battery_is_fully_charged(charging_state.power_metrics)) {
+                next_mode = MODE_MONITORING;
+                break;
+            }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
               // Button press indicates the user would to be presented the menu
