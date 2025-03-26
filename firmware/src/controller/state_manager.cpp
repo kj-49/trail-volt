@@ -36,7 +36,7 @@ void state_manager_update_mode()
                 next_mode = MODE_BALANCING;
                 break;
             }
-            if (charging_state.is_over_current) {
+            if (!charging_current_within_limits()) {
                 next_mode = MODE_CHARGING_FAULT;
                 break;
             }
@@ -51,8 +51,15 @@ void state_manager_update_mode()
             }
             break;
         case MODE_CHARGING_FAULT:
-            if (!charging_state.is_over_current) {
-                next_mode = MODE_MONITORING;
+            /*
+             * In the event of a charging fault, require manual intervention.
+             */
+
+            // If no crucial tasks need to be taken, listen for user input
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+              // Button press indicates the user would to be presented the menu
+              next_mode = MODE_MENU;
+              break;
             }
             break;
         case MODE_SUPPLYING:

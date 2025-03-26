@@ -33,7 +33,6 @@ void charging_update_state()
     charging_state.power_metrics.ina_power_w = ina260.readPower() / (float)1000;
 
     charging_state.power_metrics.charge_voltage_v = adc_read(CHARGE_VOLTAGE_PIN, CHARGE_VOLTAGE_DIVIDER_RATIO);
-    charging_state.is_over_current = !charging_current_within_limits();
 }
 
 uint8_t charging_calculate_duty_cycle()

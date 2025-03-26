@@ -30,7 +30,6 @@ typedef struct {
 } power_metrics_t;
 
 typedef struct {
-  bool is_over_current;
   uint8_t duty_cycle_uint8;
   power_metrics_t power_metrics;
 } charging_state_t;
