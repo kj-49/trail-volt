@@ -2,6 +2,7 @@
 #include "gpio.h"
 
 static encoder_event_e pending_event;
+static unsigned long last_button_press_ms = 0;
 
 void encoder_init()
 {
@@ -30,5 +31,15 @@ void encoder_handle_clk_rising()
 
 void encoder_handle_btn_press()
 {
-    pending_event = ENCODER_EVENT_BUTTON_PRESS;
+    unsigned long current_count = millis();
+
+    /*
+     * To debounce button press, only register if last button press
+     * was longer than 50ms ago.
+     */
+    if (current_count - last_button_press_ms > 50) {
+        pending_event = ENCODER_EVENT_BUTTON_PRESS;
+    }
+
+    last_button_press_ms = current_count;   
 }
