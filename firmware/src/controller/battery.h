@@ -1,8 +1,8 @@
-
 #ifndef BATTERY_H
 #define	BATTERY_H
 
 #include "mode.h"
+#include "charging.h"
 
 #define TOTAL_CELL_ADC_DIVISION 4.0f
 #define LOWER_CELL_ADC_DIVISION 4.0f
@@ -11,6 +11,13 @@
  * The tolerable difference between the upper and lower cell voltages.
  */
 #define BALANCE_THRESHOLD_V 0.1
+
+/*
+ * This is the series combined voltage we wish to charge our cells to.
+ * 18650 lithium-ion cells can be charge to 4.2V for maximum capacity,
+ * but charging to 4.0V is safer with the tradeoff of less capacity.
+ */
+#define FULLY_CHARGED_SINGLE_CELL_V 4.0f
 
 typedef struct {
     float upper_cell_voltage_v;
@@ -55,6 +62,12 @@ bool battery_balancing_needed();
  * @return The difference between the upper and lower cell voltages.
  */
 float battery_get_voltage_difference();
+
+/**
+ * @brief  Determines whether the batteries are fully charged.
+ * @return True if fully charged.
+ */
+bool battery_is_fully_charged(power_metrics_t power_metrics);
 
 #endif	/* BATTERY_H */
 

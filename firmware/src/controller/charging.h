@@ -3,6 +3,7 @@
 #define	CHARGING_H
 
 #include "mode.h"
+#include <stdint.h>
 
 // App Voltage = ADC reading * CHARGE_VOLTAGE_DIVIDER_RATIO
 #define CHARGE_VOLTAGE_DIVIDER_RATIO 3.925f
@@ -29,7 +30,6 @@ typedef struct {
 } power_metrics_t;
 
 typedef struct {
-  bool is_charging;
   bool is_over_current;
   uint8_t duty_cycle_uint8;
   power_metrics_t power_metrics;
