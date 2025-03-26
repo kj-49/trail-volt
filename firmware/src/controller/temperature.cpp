@@ -8,7 +8,8 @@
  * @brief  Gets the resistance by reading the voltage drop across the thermistor.
  * @return The resistance in Ohms.
  */
-static float get_resistance(int pin) {
+static float get_resistance(int pin)
+{
     float voltage = adc_read(pin, THERMISTOR_ADC_DIVISION);
 
     float drop;
@@ -27,7 +28,8 @@ static float get_resistance(int pin) {
  * @param  pin: The ADC pin attached to the thermistor.
  * @return The temperature in C.
  */
-static float get_temp_from_thermistor(int pin) {
+static float get_temp_from_thermistor(int pin)
+{
     const float R0 = 10000.0f;
     const float Beta = 3380.0f;            // These were found in datasheet.
     const float T0 = 298.15f;
@@ -42,12 +44,14 @@ static float get_temp_from_thermistor(int pin) {
     return t_celsius;
 }
 
-float temperature_get_series_reading() {
+float temperature_get_series_reading()
+{
     float temp_c = get_temp_from_thermistor(THERMISTOR_2_PIN);
     return temp_c;
 }
 
-float temperature_get_ground_reading() {
+float temperature_get_ground_reading()
+{
     float temp_c = get_temp_from_thermistor(THERMISTOR_1_PIN);
     return temp_c;
 }
