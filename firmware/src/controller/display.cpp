@@ -6,11 +6,12 @@
 #include "Fonts/GFX_fonts/Font5x7FixedMono.h"
 #include "Fonts/FreeSansBold6pt7b.h"
 #include "debug.h"
+#include "menu.h"
 
 static Adafruit_SH1106G display = Adafruit_SH1106G(DISP_WIDTH, DISP_HEIGHT, &Wire, OLED_RESET);
 
-void display_draw_logo() {
-    // Define the logo bitmap
+void display_draw_logo()
+{
     static const unsigned char PROGMEM logo_bits[] = {
         // '3', 128x40px
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -60,45 +61,41 @@ void display_draw_logo() {
     display.display();
 }
 
-void display_init() {
-    // Initialize the display
+void display_init()
+{
     if (!display.begin(i2c_address, true)) {
         D_printlnf("SH1106 allocation failed");
-        for (;;); // Don't proceed, loop forever
+        for (;;);
     }
 
-    // Clear the buffer
     display.clearDisplay();
 
-    // Set the font
     display.setFont(&Font5x5Fixed);
     display.setTextColor(SH110X_WHITE);
     display.setRotation(0);
 }
 
-void display_update() {
-
+void display_update()
+{
     battery_state_t battery_state = battery_get_state();
     charging_state_t charging_state = charging_get_state();
-    mode_e mode = get_mode();
+    mode_e mode = mode_get();
 
     display.clearDisplay();
     
-    // Battery dimensions and positions
     uint8_t battery_width = 16;
     uint8_t battery_height = 35;
     uint8_t terminal_width = 6;
     uint8_t terminal_height = 3;
     uint8_t battery_spacing = 8;
     uint8_t start_x = 0;
-    uint8_t start_y = 10; // Moved down slightly to fit temperature text above
+    uint8_t start_y = 10; // Moved down slightly to fit voltage text above
     
     // Text area for sensor values
     uint8_t text_start_x = start_x + 2 * battery_width + battery_spacing + 8;
     uint8_t text_start_y = 0;
     uint8_t line_height = 8;
     
-    // Maximum battery voltage
     float max_voltage = 4.2;
     
     // Draw Battery 1
@@ -283,6 +280,33 @@ void display_update() {
                 display.print("DRAINING UPPER");
             }
             break;
+        case MODE_MENU: {
+            mode_e selected_mode = menu_get_selected_state();
+
+            display.clearDisplay();
+
+            display.setFont(&FreeSansBold6pt7b);
+            int textHeight = 12;
+            int startX = (DISP_WIDTH - 48) / 2;
+            int startY = (DISP_HEIGHT - (textHeight * 2)) / 2;
+
+
+            if (selected_mode == MODE_RECEIVING) {
+                display.setCursor(startX - 12, startY - 1);
+                display.print("> "); // Marker to indicate selection
+            }
+            display.setCursor(startX, startY);
+            display.print("RECEIVE");
+
+            if (selected_mode == MODE_SUPPLYING) {
+              display.setCursor(startX - 12, startY + textHeight + 8);
+                display.print("> "); // Marker to indicate selection
+            }
+            display.setCursor(startX, startY + textHeight + 10); 
+            display.print("SUPPLY");
+
+            display.display();
+        }
         default:
             break;
     }

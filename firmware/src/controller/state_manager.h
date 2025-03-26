@@ -21,6 +21,8 @@ void state_manager_update_mode();
 
 /**
  * @brief  Applies updates to the hardware based on the current system state.
+ * @note   This function is not responsible for checking whether the current state
+ *         is accurate, but only for reflecting this current state through hardware updates.
  */
 void state_manager_apply_hardware_updates();
 

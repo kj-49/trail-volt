@@ -2,10 +2,12 @@
 
 static mode_e mode;
 
-mode_e get_mode() {
+mode_e mode_get()
+{
     return mode;
 }
 
-void set_mode(mode_e new_mode) {
+void mode_set(mode_e new_mode)
+{
     mode = new_mode;
 }

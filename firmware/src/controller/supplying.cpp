@@ -2,11 +2,12 @@
 #include <Arduino.h>
 #include "gpio.h"
 
-bool supplying_is_enabled() {
-    bool supplying_enable_status = digitalRead(BTN_1_PIN);
+bool supplying_disable()
+{
+    digitalWrite(USB_ENABLE_PIN, LOW);
+}
 
-    if (supplying_enable_status == HIGH) {
-        return true;
-    }
-    return false;
+bool supplying_enable()
+{
+    digitalWrite(USB_ENABLE_PIN, HIGH);
 }
