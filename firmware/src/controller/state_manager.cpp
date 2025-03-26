@@ -151,15 +151,6 @@ void state_manager_apply_hardware_updates()
                 battery_set_lower_discharge(true);
             }
             break;
-        case MODE_CHARGING_FAULT:
-            // Stop charging
-            charging_stop(); 
-            // Stop supplying (shouldn't be anyways)
-            supplying_disable();
-            // Stop discharging (shouldn't be anyways)
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
         case MODE_RECEIVING:
             supplying_disable();
             battery_set_upper_discharge(false);
@@ -167,24 +158,10 @@ void state_manager_apply_hardware_updates()
             
             charging_set_duty_cycle(charging_calculate_duty_cycle());
             break;
+        case MODE_CHARGING_FAULT:
         case MODE_SUPPLYING:
-            charging_stop();
-            supplying_enable();
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
         case MODE_MONITORING:
-            charging_stop();
-            supplying_disable();
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
         case MODE_BATTERY_OVERTEMP:
-            charging_stop();
-            supplying_disable();
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
         case MODE_MENU:
             charging_stop();
             supplying_disable();
