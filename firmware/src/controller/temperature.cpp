@@ -17,8 +17,9 @@ static float get_resistance(int pin) {
     } else {
         drop = voltage;
     }
-
     float resistance = (5.0f * SERIES_RESISTOR) / drop;
+
+    return resistance;
 }
 
 /**
@@ -28,7 +29,6 @@ static float get_resistance(int pin) {
  */
 static float get_temp_from_thermistor(int pin) {
     const float R0 = 10000.0f;
-    const float R_fixed = 40000.0f;
     const float Beta = 3380.0f;            // These were found in datasheet.
     const float T0 = 298.15f;
     
