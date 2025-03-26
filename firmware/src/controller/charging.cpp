@@ -78,11 +78,6 @@ void charging_set_duty_cycle(uint8_t duty_cycle)
     charging_state.duty_cycle_uint8 = sanitized_duty_cycle;
 }
 
-bool is_receiving_charge()
-{
-    return true;
-}
-
 void charging_set_shutdown_pin(bool shutdown)
 {
     if (shutdown) {
