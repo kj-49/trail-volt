@@ -76,3 +76,19 @@ bool battery_is_fully_charged(power_metrics_t power_metrics)
     return false;
 }
 
+bool battery_in_charge_temp_range()
+{
+    bool ground_in_range = battery_state.ground_temperature_c < MAX_CHARGING_TEMP_C && battery_state.ground_temperature_c > MIN_CHARGING_TEMP_C;
+    bool series_in_range = battery_state.series_temperature_c < MAX_CHARGING_TEMP_C && battery_state.series_temperature_c > MIN_CHARGING_TEMP_C;
+
+    return ground_in_range && series_in_range;
+}
+
+bool battery_in_discharge_temp_range()
+{
+    bool ground_in_range = battery_state.ground_temperature_c < MAX_DISCHARGING_TEMP_C && battery_state.ground_temperature_c > MIN_DISCHARGING_TEMP_C;
+    bool series_in_range = battery_state.series_temperature_c < MAX_DISCHARGING_TEMP_C && battery_state.series_temperature_c > MIN_DISCHARGING_TEMP_C;
+
+    return ground_in_range && series_in_range;
+}
+

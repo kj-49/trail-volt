@@ -171,11 +171,7 @@ void display_update()
     float percentage_duty_cycle = charging_state.duty_cycle_uint8 * ((float)100/255);
 
     switch (mode) {
-        case MODE_SLEEP:
-
-            break;
         case MODE_RECEIVING:
-
             display.setFont(&FreeSansBold6pt7b);
             display.setCursor(text_start_x, y_pos);
             display.print("RECEIVING");
@@ -305,6 +301,14 @@ void display_update()
             } else if (battery_state.upper_discharging) {
                 display.print("DRAINING UPPER");
             }
+            break;
+        case MODE_BATTERY_OVERTEMP:
+            display.setFont(&FreeSansBold6pt7b);
+            display.setCursor(text_start_x, y_pos);
+            display.print("OVERTEMP");
+            display.setTextSize(1);
+            display.setFont(&Font5x5Fixed);
+            y_pos += line_height;
             break;
         case MODE_MENU: {
             mode_e selected_mode = menu_get_selected_state();

@@ -19,6 +19,15 @@
  */
 #define FULLY_CHARGED_SINGLE_CELL_V 4.0f
 
+/*
+ * INR-18650-P30B charging temperature range is 0C to 60C. The discharging
+ * range is -40C to 60C.
+ */
+static const float MAX_CHARGING_TEMP_C = 40.0f;
+static const float MIN_CHARGING_TEMP_C = 0.0f;
+static const float MAX_DISCHARGING_TEMP_C = 40.0f;
+static const float MIN_DISCHARGING_TEMP_C = -20.0f;
+
 typedef struct {
     float upper_cell_voltage_v;
     float lower_cell_voltage_v;
@@ -68,6 +77,18 @@ float battery_get_voltage_difference();
  * @return True if fully charged.
  */
 bool battery_is_fully_charged(power_metrics_t power_metrics);
+
+/**
+ * @brief  Determines whether the batteries are within the allowable charging temperature.
+ * @return True if in temperature range.
+ */
+bool battery_in_charge_temp_range();
+
+/**
+ * @brief  Determines whether the batteries are within the allowable discharging temperature.
+ * @return True if in temperature range.
+ */
+bool battery_in_discharge_temp_range();
 
 #endif	/* BATTERY_H */
 
