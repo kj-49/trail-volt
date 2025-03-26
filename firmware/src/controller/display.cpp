@@ -8,7 +8,15 @@
 #include "debug.h"
 #include "menu.h"
 
-static Adafruit_SH1106G display = Adafruit_SH1106G(DISP_WIDTH, DISP_HEIGHT, &Wire, OLED_RESET);
+#ifdef USE_SSD1306
+    #include <Adafruit_SSD1306.h>
+    #define DISPLAY_WHITE WHITE
+    static Adafruit_SSD1306 display(128, 64, &Wire, -1);
+#else
+    #include <Adafruit_SH110X.h>
+    #define DISPLAY_WHITE SH110X_WHITE
+    static Adafruit_SH1106G display = Adafruit_SH1106G(DISP_WIDTH, DISP_HEIGHT, &Wire, OLED_RESET);
+#endif
 
 void display_draw_logo()
 {
@@ -57,21 +65,39 @@ void display_draw_logo()
     };
 
     display.clearDisplay();
-    display.drawBitmap(0, 12, logo_bits, 128, 40, SH110X_WHITE);
+    display.drawBitmap(0, 12, logo_bits, 128, 40, DISPLAY_WHITE);
     display.display();
 }
 
 void display_init()
 {
-    if (!display.begin(i2c_address, true)) {
-        D_printlnf("SH1106 allocation failed");
-        for (;;);
-    }
+    // if (!display.begin(DISPLAY_I2C_ADDRESS, true)) {
+    //     // #ifdef USE_SSD1306
+    //     //     D_printlnf("SSD1306 allocation failed");
+    //     // #else
+    //     //     D_printlnf("SH1106 allocation failed");
+    //     // #endif
+    //     // for (;;);
+    // }
+
+    #ifdef USE_SSD1306
+      if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
+        Serial.println(F("SSD1306 allocation failed"));
+        while(true);
+      }
+    #else
+      if (!display.begin(DISPLAY_I2C_ADDRESS, true)) {
+        Serial.println(F("SSD1306 allocation failed"));
+        while(true);
+      }
+    #endif
+
+
 
     display.clearDisplay();
-
+    
     display.setFont(&Font5x5Fixed);
-    display.setTextColor(SH110X_WHITE);
+    display.setTextColor(DISPLAY_WHITE);
     display.setRotation(0);
 }
 
@@ -99,8 +125,8 @@ void display_update()
     float max_voltage = 4.2;
     
     // Draw Battery 1
-    display.drawRect(start_x, start_y + terminal_height, battery_width, battery_height, SH110X_WHITE);
-    display.fillRect(start_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height, SH110X_WHITE);
+    display.drawRect(start_x, start_y + terminal_height, battery_width, battery_height, DISPLAY_WHITE);
+    display.fillRect(start_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height, DISPLAY_WHITE);
     
     // Calculate fill level for Battery 1
     float volt1 = battery_state.upper_cell_voltage_v;
@@ -108,12 +134,12 @@ void display_update()
     if (fill_height1 > battery_height) fill_height1 = battery_height;
     
     // Draw fill level
-    display.fillRect(start_x + 2, start_y + terminal_height + battery_height - fill_height1, battery_width - 4, fill_height1, SH110X_WHITE);
+    display.fillRect(start_x + 2, start_y + terminal_height + battery_height - fill_height1, battery_width - 4, fill_height1, DISPLAY_WHITE);
     
     // Draw Battery 2
     uint8_t batt2_x = start_x + battery_width + battery_spacing;
-    display.drawRect(batt2_x, start_y + terminal_height, battery_width, battery_height, SH110X_WHITE);
-    display.fillRect(batt2_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height, SH110X_WHITE);
+    display.drawRect(batt2_x, start_y + terminal_height, battery_width, battery_height, DISPLAY_WHITE);
+    display.fillRect(batt2_x + (battery_width - terminal_width) / 2, start_y, terminal_width, terminal_height, DISPLAY_WHITE);
     
     // Calculate fill level for Battery 2
     float volt2 = battery_state.lower_cell_voltage_v;
@@ -121,7 +147,7 @@ void display_update()
     if (fill_height2 > battery_height) fill_height2 = battery_height;
     
     // Draw fill level
-    display.fillRect(batt2_x + 2, start_y + terminal_height + battery_height - fill_height2, battery_width - 4, fill_height2, SH110X_WHITE);
+    display.fillRect(batt2_x + 2, start_y + terminal_height + battery_height - fill_height2, battery_width - 4, fill_height2, DISPLAY_WHITE);
     
     // Draw voltage levels above cells
     display.setCursor(start_x + (battery_width - 14) / 2, start_y - 5);
