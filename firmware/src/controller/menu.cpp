@@ -9,11 +9,13 @@ void menu_update_state(encoder_event_e encoder_event) {
      * - Counter-clockwise rotations => upward navigation of the menu.
      */
     switch (encoder_event) {
-        case ENCODER_EVENT_CLOCKWISE:
-            menu_state.selected_mode = MODE_RECEIVING;
-            break;
-        case ENCODER_EVENT_COUNTERCLOCKWISE:
-            menu_state.selected_mode = MODE_SUPPLYING;
+        // Button 2 toggles selected item
+        case ENCODER_EVENT_BUTTON_CHANGE_PRESS:
+            if (menu_state.selected_mode == MODE_RECEIVING) {
+                menu_state.selected_mode = MODE_SUPPLYING;
+            } else {
+                menu_state.selected_mode = MODE_RECEIVING;
+            }
             break;
         default:
             // Other events are not important here.

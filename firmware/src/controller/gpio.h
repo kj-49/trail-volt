@@ -18,14 +18,14 @@ const int LOWER_CELL_ADC_PIN = A3;
 /* A6 not functional on current board */
 const int CHARGE_VOLTAGE_PIN = A7;
 
-/* Rotary encoder dt pin. */
-const int ENCODER_DT_PIN = 1;
+/* BROKEN */
+const int SWITCH_1_PIN = 1;
 
-/* Rotary encoder button pin. */
-const int ENCODER_SW_PIN = 2;
+/* Menu change */
+const int BTN_2_PIN = 2;
 
-/* Rotary encoder clock pin. */
-const int ENCODER_CLK_PIN = 3;
+/* Menu confirm  */
+const int BTN_1_PIN = 3;
 
 /* Fed into the shutdown pin for our gate driver. Is active low. */
 const int H_BRIDGE_SHUT_DOWN_PIN_AL = 5;
@@ -41,6 +41,7 @@ const int C2_BALANCING_PIN = 8;
 
 /* PWM signal fed into the gate driver IC, controls gate voltages of the upper & lower NMOS. */
 const int CHARGE_PWM_PIN = 9;
+
 
 /**
  * @brief  Initializes GPIO pins.
