@@ -49,7 +49,7 @@ void state_manager_update_mode()
                 break;
             }
             // If no crucial tasks need to be taken, listen for user input
-            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
             }
@@ -58,7 +58,7 @@ void state_manager_update_mode()
             /*
              * In the event of a charging fault, require manual intervention.
              */
-            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
               break;
@@ -74,7 +74,7 @@ void state_manager_update_mode()
                 break;
             }
             // If no crucial tasks need to be taken, listen for user input
-            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
             }
@@ -85,7 +85,7 @@ void state_manager_update_mode()
                 break;
             }
             // If no crucial tasks need to be taken, listen for user input
-            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
             }
@@ -105,7 +105,7 @@ void state_manager_update_mode()
             /*
              * In the event of battery overtemperature, require manual intervention.
              */
-            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
               break;
@@ -115,7 +115,7 @@ void state_manager_update_mode()
         case MODE_MENU: {
             encoder_event_e event = encoder_get_event();
             // If button press, we want to move to the currently selected state
-            if (event == ENCODER_EVENT_BUTTON_PRESS) {
+            if (event == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
                 next_mode = menu_get_selected_state();
             } else {
                 // If not a button press, update the menu state.
