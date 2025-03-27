@@ -20,7 +20,7 @@
 
 #define CHARGING_VOLTAGE_V 8.2f
 
-#define MAX_CHARGE_CURRENT_A 0.5f
+#define MAX_CHARGE_CURRENT_mA 500.0f
 
 typedef struct {
   float ina_current_ma;
