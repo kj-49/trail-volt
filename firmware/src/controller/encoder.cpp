@@ -37,7 +37,7 @@ void encoder_handle_btn_press()
      * To debounce button press, only register if last button press
      * was longer than 50ms ago.
      */
-    if (current_count - last_button_press_ms > 50) {
+    if (current_count - last_button_press_ms > 250) {
         pending_event = ENCODER_EVENT_BUTTON_PRESS;
     }
 
