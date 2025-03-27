@@ -71,15 +71,6 @@ void display_draw_logo()
 
 void display_init()
 {
-    // if (!display.begin(DISPLAY_I2C_ADDRESS, true)) {
-    //     // #ifdef USE_SSD1306
-    //     //     D_printlnf("SSD1306 allocation failed");
-    //     // #else
-    //     //     D_printlnf("SH1106 allocation failed");
-    //     // #endif
-    //     // for (;;);
-    // }
-
     #ifdef USE_SSD1306
       if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
         Serial.println(F("SSD1306 allocation failed"));
@@ -91,9 +82,7 @@ void display_init()
         while(true);
       }
     #endif
-
-
-
+    
     display.clearDisplay();
     
     display.setFont(&Font5x5Fixed);
