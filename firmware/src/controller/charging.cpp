@@ -32,7 +32,7 @@ void charging_update_state()
     charging_state.power_metrics.ina_current_ma = ina260.readCurrent();
     charging_state.power_metrics.ina_power_w = ina260.readPower() / (float)1000;
 
-    charging_state.power_metrics.charge_voltage_v = adc_read(CHARGE_VOLTAGE_PIN, CHARGE_VOLTAGE_DIVIDER_RATIO);
+    charging_state.power_metrics.buck_voltage_v = adc_read(CHARGE_VOLTAGE_PIN, CHARGE_VOLTAGE_DIVIDER_RATIO);
 }
 
 uint8_t charging_calculate_duty_cycle()

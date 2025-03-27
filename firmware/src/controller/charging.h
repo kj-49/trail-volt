@@ -26,7 +26,7 @@ typedef struct {
   float ina_current_ma;
   float ina_bus_voltage_v;
   float ina_power_w;
-  float charge_voltage_v;
+  float buck_voltage_v;
 } power_metrics_t;
 
 typedef struct {
