@@ -11,7 +11,7 @@
  */
 static float adc_to_v(uint16_t adc_value, float voltage_divider_ratio)
 {
-    float voltage = (adc_value * (float)ADC_VREF) / 1023;
+    float voltage = (adc_value * (float)ADC_VREF_CALIBRATED) / 1023;
     return voltage * voltage_divider_ratio;
 }
 
