@@ -1,6 +1,5 @@
 /* Setting DEBUG to 1 enables serial logging. */
 #include "debug.h"
-
 #include "display.h"
 #include "mode.h"
 #include "charging.h"

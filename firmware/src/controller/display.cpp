@@ -168,11 +168,11 @@ void display_update()
             display.setFont(&Font5x5Fixed);
             y_pos += line_height;
 
-            // Total cell voltage
+            // Total cell percentage
             display.setCursor(text_start_x, y_pos);
-            display.print("V-BAT: ");
-            display.print(total_voltage, 2);  // Print average voltage with 2 decimal places
-            display.print("V");
+            display.print("CHARGE: ");
+            display.print(battery_get_total_percentage(), 2);  // Print average voltage with 2 decimal places
+            display.print("%");
             y_pos += line_height;
 
             // Supply voltage as seen by the batteries taken from INA
@@ -219,11 +219,11 @@ void display_update()
             display.setFont(&Font5x5Fixed);
             y_pos += line_height;
 
-            // Total voltage
+            // Total cell percentage
             display.setCursor(text_start_x, y_pos);
-            display.print("V-BAT: ");
-            display.print(total_voltage, 2);  // Print average voltage with 2 decimal places
-            display.print("V");
+            display.print("CHARGE: ");
+            display.print(battery_get_total_percentage(), 2);  // Print average voltage with 2 decimal places
+            display.print("%");
             y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);
@@ -270,10 +270,11 @@ void display_update()
             display.setFont(&Font5x5Fixed);
             y_pos += line_height;
 
+            // Total cell percentage
             display.setCursor(text_start_x, y_pos);
-            display.print("V-BAT: ");
-            display.print(total_voltage, 2);  // Print average voltage with 2 decimal places
-            display.print("V");
+            display.print("CHARGE: ");
+            display.print(battery_get_total_percentage(), 2);  // Print average voltage with 2 decimal places
+            display.print("%");
             y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);

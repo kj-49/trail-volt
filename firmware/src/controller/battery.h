@@ -90,5 +90,25 @@ bool battery_in_charge_temp_range();
  */
 bool battery_in_discharge_temp_range();
 
+
+/**
+ * @brief  Calculates the upper battery charge percentage.
+ * @return The percentage.
+ */
+float battery_get_upper_percentage();
+
+
+/**
+ * @brief  Calculates the upper battery charge percentage.
+ * @return The percentage.
+ */
+float battery_get_lower_percentage();
+
+/**
+ * @brief  Calculates the total series battery charge percentage.
+ * @return The percentage.
+ */
+float battery_get_total_percentage();
+
 #endif	/* BATTERY_H */
 
