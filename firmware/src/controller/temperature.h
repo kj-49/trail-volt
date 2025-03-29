@@ -1,8 +1,6 @@
 #ifndef TEMPERATURE_H
 #define	TEMPERATURE_H
 
-#define IS_HIGH_SIDE 1
-
 const float SERIES_RESISTOR = 10000.0;
 
 #define THERMISTOR_ADC_DIVISION 1

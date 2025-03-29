@@ -12,13 +12,8 @@ static float get_resistance(int pin)
 {
     float voltage = adc_read(pin, THERMISTOR_ADC_DIVISION);
 
-    float drop;
-    if (IS_HIGH_SIDE) {
-        drop = 5.0f - voltage;
-    } else {
-        drop = voltage;
-    }
-    float resistance = (5.0f * SERIES_RESISTOR) / drop;
+    // Thermistors are on high-side of dividers
+    float resistance = ((5.0f * SERIES_RESISTOR) / voltage) - SERIES_RESISTOR;
 
     return resistance;
 }
@@ -31,7 +26,7 @@ static float get_resistance(int pin)
 static float get_temp_from_thermistor(int pin)
 {
     const float R0 = 10000.0f;
-    const float Beta = 3380.0f;            // These were found in datasheet.
+    const float Beta = 3380.0f;
     const float T0 = 298.15f;
     
     float r_ntc = get_resistance(pin);
