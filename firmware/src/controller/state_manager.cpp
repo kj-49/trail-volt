@@ -44,7 +44,7 @@ void state_manager_update_mode()
                 next_mode = MODE_CHARGING_FAULT;
                 break;
             }
-            if (battery_is_fully_charged(charging_state.power_metrics)) {
+            if (battery_is_fully_charged(charging_state.battery_metrics)) {
                 next_mode = MODE_MONITORING;
                 break;
             }

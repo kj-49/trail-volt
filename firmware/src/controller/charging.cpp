@@ -9,15 +9,19 @@
 #define K 1  // Constant for scaling.
 
 static charging_state_t charging_state;
-static Adafruit_INA260 ina260 = Adafruit_INA260();
+
+static Adafruit_INA260 battery_ina = Adafruit_INA260();
+static Adafruit_INA260 supply_ina = Adafruit_INA260();
 
 void charging_init() 
 {
-    if (!ina260.begin()) {
-        D_printlnf("Couldn't find INA260");
+    if (!battery_ina.begin(BATTERY_INA_ADDRESS)) {
+        D_printlnf("Couldn't find battery INA260");
         while (1);
-    } else {
-        D_printlnf("Found INA260");
+    }
+    if (!supply_ina.begin(SUPPLY_INA_ADDRESS)) {
+        D_printlnf("Couldn't find supply INA260");
+        while (1);
     }
 }
 
@@ -28,17 +32,21 @@ charging_state_t charging_get_state()
 
 void charging_update_state()
 {
-    charging_state.power_metrics.ina_bus_voltage_v = ina260.readBusVoltage() / (float)1000;
-    charging_state.power_metrics.ina_current_ma = ina260.readCurrent();
-    charging_state.power_metrics.ina_power_w = ina260.readPower() / (float)1000;
+    charging_state.battery_metrics.ina.bus_voltage_v = battery_ina.readBusVoltage() / (float)1000;
+    charging_state.battery_metrics.ina.current_ma = battery_ina.readCurrent();
+    charging_state.battery_metrics.ina.power_w = battery_ina.readPower() / (float)1000;
 
-    charging_state.power_metrics.buck_voltage_v = adc_read(CHARGE_VOLTAGE_PIN, CHARGE_VOLTAGE_DIVIDER_RATIO);
+    charging_state.supply_metrics.ina.bus_voltage_v = supply_ina.readBusVoltage() / (float)1000;
+    charging_state.supply_metrics.ina.current_ma = supply_ina.readCurrent();
+    charging_state.supply_metrics.ina.power_w = supply_ina.readPower() / (float)1000;
+
+    charging_state.buck_voltage_v = adc_read(CHARGE_VOLTAGE_PIN, CHARGE_VOLTAGE_DIVIDER_RATIO);
 }
 
 uint8_t charging_calculate_duty_cycle()
 {
     uint8_t current_duty_cycle = charging_state.duty_cycle_uint8;
-    float current_charging_voltage_v = charging_state.power_metrics.ina_bus_voltage_v;
+    float current_charging_voltage_v = charging_state.battery_metrics.ina.bus_voltage_v;
     
     float critical = 1;
 
@@ -100,7 +108,7 @@ void charging_stop()
 
 bool charging_current_within_limits()
 {
-    bool in_limits = (charging_state.power_metrics.ina_current_ma < MAX_CHARGE_CURRENT_mA);
+    bool in_limits = (charging_state.battery_metrics.ina.current_ma < MAX_CHARGE_CURRENT_mA);
 
     return in_limits;
 }
