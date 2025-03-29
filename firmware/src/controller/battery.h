@@ -4,29 +4,29 @@
 #include "mode.h"
 #include "charging.h"
 
-#define TOTAL_CELL_ADC_DIVISION 4.0f
-#define LOWER_CELL_ADC_DIVISION 4.0f
+const float TOTAL_CELL_ADC_DIVISION = 4.0;
+const float LOWER_CELL_ADC_DIVISION = 4.0;
 
 /**
  * The tolerable difference between the upper and lower cell voltages.
  */
-#define BALANCE_THRESHOLD_V 0.1
+const float BALANCE_THRESHOLD_V = 0.1;
 
 /*
  * This is the series combined voltage we wish to charge our cells to.
  * 18650 lithium-ion cells can be charge to 4.2V for maximum capacity,
  * but charging to 4.0V is safer with the tradeoff of less capacity.
  */
-#define FULLY_CHARGED_SINGLE_CELL_V 4.0f
+const float FULLY_CHARGED_SINGLE_CELL_V = 4.0;
 
 /*
  * INR-18650-P30B charging temperature range is 0C to 60C. The discharging
  * range is -40C to 60C.
  */
-static const float MAX_CHARGING_TEMP_C = 40.0f;
-static const float MIN_CHARGING_TEMP_C = 0.0f;
-static const float MAX_DISCHARGING_TEMP_C = 40.0f;
-static const float MIN_DISCHARGING_TEMP_C = -20.0f;
+static const float MAX_CHARGING_TEMP_C = 40.0;
+static const float MIN_CHARGING_TEMP_C = 0.0;
+static const float MAX_DISCHARGING_TEMP_C = 40.0;
+static const float MIN_DISCHARGING_TEMP_C = -20.0;
 
 typedef struct {
     float upper_cell_voltage_v;

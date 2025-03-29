@@ -10,7 +10,7 @@
 #include "encoder.h"
 #include "interrupt.h"
 
-#define LOOP_DELAY_MS 10
+const int LOOP_DELAY_MS = 10;
 
 void setup()
 {

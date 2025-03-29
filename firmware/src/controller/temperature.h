@@ -2,7 +2,8 @@
 #define	TEMPERATURE_H
 
 #define IS_HIGH_SIDE 1
-#define SERIES_RESISTOR 10000.0f
+
+const float SERIES_RESISTOR = 10000.0;
 
 #define THERMISTOR_ADC_DIVISION 1
 

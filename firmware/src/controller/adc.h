@@ -2,7 +2,7 @@
 #ifndef ADC_H
 #define	ADC_H
 
-#define ADC_VREF_CALIBRATED 4.916f
+const float ADC_VREF_CALIBRATED = 4.916;
 
 /**
  * @brief  Reads value from specified digital pin using ADC
