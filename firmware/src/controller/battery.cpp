@@ -55,7 +55,7 @@ bool battery_balancing_needed()
     return (voltage_diff > BALANCE_THRESHOLD_V);
 }
 
-bool battery_is_fully_charged(power_metrics_t power_metrics)
+bool battery_is_fully_charged(battery_metrics_t battery_metrics)
 {
     /*
      * We will determine if our cell is fully charged by each individual cell voltage.
@@ -69,7 +69,7 @@ bool battery_is_fully_charged(power_metrics_t power_metrics)
      * indicate a fully charged cell.
      */
     float fully_charged_combined = FULLY_CHARGED_SINGLE_CELL_V * 2.0;
-    if (power_metrics.ina_bus_voltage_v > fully_charged_combined) {
+    if (battery_metrics.ina.bus_voltage_v > fully_charged_combined) {
         return true;
     }
 

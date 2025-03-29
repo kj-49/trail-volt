@@ -76,7 +76,7 @@ float battery_get_voltage_difference();
  * @brief  Determines whether the batteries are fully charged.
  * @return True if fully charged.
  */
-bool battery_is_fully_charged(power_metrics_t power_metrics);
+bool battery_is_fully_charged(battery_metrics_t battery_metrics);
 
 /**
  * @brief  Determines whether the batteries are within the allowable charging temperature.

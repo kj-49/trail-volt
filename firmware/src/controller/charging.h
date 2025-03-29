@@ -22,16 +22,33 @@
 
 #define MAX_CHARGE_CURRENT_mA 500.0f
 
+// A0 & A1 tied to GND
+#define SUPPLY_INA_ADDRESS 0x45
+// A0 & A1 tied to VSS
+#define BATTERY_INA_ADDRESS 0x40
+
 typedef struct {
-  float ina_current_ma;
-  float ina_bus_voltage_v;
-  float ina_power_w;
-  float buck_voltage_v;
-} power_metrics_t;
+  float current_ma;
+  float bus_voltage_v;
+  float power_w;
+} ina_metrics_t;
+
+/*
+ * Wrap the types for better type safety throughout the code.
+ */
+typedef struct {
+    ina_metrics_t ina;
+} battery_metrics_t;
+
+typedef struct {
+    ina_metrics_t ina;
+} supply_metrics_t;
 
 typedef struct {
   uint8_t duty_cycle_uint8;
-  power_metrics_t power_metrics;
+  float buck_voltage_v;
+  battery_metrics_t battery_metrics;
+  supply_metrics_t supply_metrics;
 } charging_state_t;
 
 /**

@@ -178,21 +178,21 @@ void display_update()
             // Supply voltage as seen by the batteries taken from INA
             display.setCursor(text_start_x, y_pos);
             display.print("V-BAT-INA: ");
-            display.print(charging_state.power_metrics.ina_bus_voltage_v, 2);  // Print average voltage with 2 decimal places
+            display.print(charging_state.battery_metrics.ina.bus_voltage_v, 2);  // Print average voltage with 2 decimal places
             display.print("V");
             y_pos += line_height;
 
             // Supply current as seen by the batteries
             display.setCursor(text_start_x, y_pos);
             display.print("I-BAT: ");
-            display.print(charging_state.power_metrics.ina_current_ma, 2);  // Print average voltage with 2 decimal places
+            display.print(charging_state.battery_metrics.ina.current_ma, 2);  // Print average voltage with 2 decimal places
             display.print("mA");
             y_pos += line_height;
 
             // Supply voltage as seen by the batteries taken from ADC
             display.setCursor(text_start_x, y_pos);
             display.print("V-BUCK: ");
-            display.print(charging_state.power_metrics.buck_voltage_v, 2);  // Print average voltage with 2 decimal places
+            display.print(charging_state.buck_voltage_v, 2);  // Print average voltage with 2 decimal places
             display.print("V");
             y_pos += line_height;
 
