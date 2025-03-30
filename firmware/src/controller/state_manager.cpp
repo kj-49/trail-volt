@@ -24,8 +24,6 @@ void state_manager_update_mode()
     battery_state_t battery_state = battery_get_state();
     charging_state_t charging_state = charging_get_state();
 
-    bool needs_balancing = battery_balancing_needed();
-    
     // Initialize next mode to current mode
     mode_e current_mode = mode_get();
     mode_e next_mode = current_mode;
@@ -36,7 +34,7 @@ void state_manager_update_mode()
                 next_mode = MODE_BATTERY_OVERTEMP;
                 break;
             }
-            if (needs_balancing) {
+            if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
                 break;
             }
@@ -69,7 +67,10 @@ void state_manager_update_mode()
                 next_mode = MODE_BATTERY_OVERTEMP;
                 break;
             }
-            if (needs_balancing) {
+            if (battery_is_depleted(charging_state.battery_metrics)) {
+                next_mode = MODE_BATTERY_UNDER_MIN;
+            }
+            if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
                 break;
             }
@@ -80,7 +81,7 @@ void state_manager_update_mode()
             }
             break;
         case MODE_MONITORING: {
-            if (needs_balancing) {
+            if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
                 break;
             }
@@ -96,7 +97,10 @@ void state_manager_update_mode()
                 next_mode = MODE_BATTERY_OVERTEMP;
                 break;
             }
-            if (!needs_balancing) {
+            if (battery_is_depleted(charging_state.battery_metrics)) {
+                next_mode = MODE_BATTERY_UNDER_MIN;
+            }
+            if (!battery_balancing_needed()) {
                 next_mode = MODE_MONITORING;
                 break;
             }
@@ -106,9 +110,9 @@ void state_manager_update_mode()
              * In the event of battery overtemperature, require manual intervention.
              */
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
-              break;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         // Very imporant to declare new scope here
@@ -123,6 +127,16 @@ void state_manager_update_mode()
             }
             break;
         }
+        case MODE_BATTERY_UNDER_MIN:
+            /*
+             * In the event of battery under voltage, require manual intervention.
+             */
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
+            }
+            break;
         default:
             next_mode = MODE_MONITORING;
             break;
@@ -163,6 +177,7 @@ void state_manager_apply_hardware_updates()
         case MODE_MONITORING:
         case MODE_BATTERY_OVERTEMP:
         case MODE_MENU:
+        case MODE_BATTERY_UNDER_MIN:
             charging_stop();
             supplying_disable();
             battery_set_upper_discharge(false);

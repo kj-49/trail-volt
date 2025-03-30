@@ -76,6 +76,26 @@ bool battery_is_fully_charged(battery_metrics_t battery_metrics)
     return false;
 }
 
+bool battery_is_depleted(battery_metrics_t battery_metrics)
+{
+    bool upper_depleted = battery_state.upper_cell_voltage_v < MINIMUM_SINGLE_CELL_V;
+    bool lower_depleted = battery_state.lower_cell_voltage_v < MINIMUM_SINGLE_CELL_V;
+
+    if (upper_depleted || lower_depleted) {
+        return true;
+    }
+
+    /*
+     * As an extra safety precaution, we will also verify that the INA reading
+     * from the total charge node is not below MINIMUM_SINGLE_CELL_V * 2.
+     */
+    if (battery_metrics.ina.bus_voltage_v < MINIMUM_SINGLE_CELL_V * 2) {
+      return true;
+    }
+
+    return false;
+}
+
 bool battery_in_charge_temp_range()
 {
     bool ground_in_range = battery_state.ground_temperature_c < MAX_CHARGING_TEMP_C && battery_state.ground_temperature_c > MIN_CHARGING_TEMP_C;

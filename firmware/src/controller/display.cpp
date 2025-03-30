@@ -325,7 +325,16 @@ void display_update()
             display.print("SUPPLY");
 
             display.display();
+            break;
         }
+        case MODE_BATTERY_UNDER_MIN:
+            display.setFont(&FreeSansBold6pt7b);
+            display.setCursor(text_start_x, y_pos);
+            display.print("UNDER MIN");
+            display.setTextSize(1);
+            display.setFont(&Font5x5Fixed);
+            y_pos += line_height;
+            break;
         default:
             break;
     }
