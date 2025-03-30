@@ -8,7 +8,8 @@ typedef enum {
   MODE_MONITORING = 4,
   MODE_BALANCING = 5,
   MODE_BATTERY_OVERTEMP = 6,
-  MODE_MENU = 7,
+  MODE_BATTERY_UNDER_MIN = 7,
+  MODE_MENU = 9,
 } mode_e;
 
 mode_e mode_get();
