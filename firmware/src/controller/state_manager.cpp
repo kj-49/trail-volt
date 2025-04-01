@@ -50,6 +50,7 @@ void state_manager_update_mode()
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
+              break;
             }
             break;
         case MODE_CHARGING_FAULT:
@@ -69,6 +70,7 @@ void state_manager_update_mode()
             }
             if (battery_is_depleted(charging_state.battery_metrics)) {
                 next_mode = MODE_BATTERY_UNDER_MIN;
+                break;
             }
             if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
@@ -76,8 +78,9 @@ void state_manager_update_mode()
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         case MODE_MONITORING: {
@@ -87,8 +90,9 @@ void state_manager_update_mode()
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         }
@@ -99,6 +103,7 @@ void state_manager_update_mode()
             }
             if (battery_is_depleted(charging_state.battery_metrics)) {
                 next_mode = MODE_BATTERY_UNDER_MIN;
+                break;
             }
             if (!battery_balancing_needed()) {
                 next_mode = MODE_MONITORING;
@@ -124,6 +129,7 @@ void state_manager_update_mode()
             } else {
                 // If not a button press, update the menu state.
                 menu_update_state(event);
+                break;
             }
             break;
         }
