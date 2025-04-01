@@ -203,6 +203,12 @@ void display_update()
             y_pos += line_height;
 
             display.setCursor(text_start_x, y_pos);
+            display.print("Efficiency: ");
+            display.print(charging_get_power_efficiency(), 0);
+            display.print("%");
+            y_pos += line_height;
+
+            display.setCursor(text_start_x, y_pos);
             if (battery_state.lower_discharging) {
                 display.print("DRAINING LOWER");
             } else if (battery_state.upper_discharging) {

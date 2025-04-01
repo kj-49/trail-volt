@@ -109,6 +109,11 @@ void charging_stop()
 bool charging_current_within_limits()
 {
     bool in_limits = (charging_state.battery_metrics.ina.current_ma < MAX_CHARGE_CURRENT_mA);
-
     return in_limits;
+}
+
+float charging_get_power_efficiency()
+{
+    float percent = (charging_state.battery_metrics.ina.power_w / charging_state.supply_metrics.ina.power_w) * 100;
+    return percent;
 }
