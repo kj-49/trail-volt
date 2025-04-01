@@ -48,8 +48,9 @@ void state_manager_update_mode()
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         case MODE_CHARGING_FAULT:
@@ -57,9 +58,9 @@ void state_manager_update_mode()
              * In the event of a charging fault, require manual intervention.
              */
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
-              break;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         case MODE_SUPPLYING:
@@ -77,8 +78,9 @@ void state_manager_update_mode()
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         case MODE_MONITORING: {
@@ -88,8 +90,9 @@ void state_manager_update_mode()
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         }
@@ -112,9 +115,9 @@ void state_manager_update_mode()
              * In the event of battery overtemperature, require manual intervention.
              */
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_CONFIRM_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
-              break;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         // Very imporant to declare new scope here
@@ -126,6 +129,7 @@ void state_manager_update_mode()
             } else {
                 // If not a button press, update the menu state.
                 menu_update_state(event);
+                break;
             }
             break;
         }
