@@ -90,6 +90,12 @@ uint8_t charging_calculate_duty_cycle();
  */
 bool charging_current_within_limits();
 
+/**
+ * @brief  Calculates the power efficiency of our charging circuit.
+ * @return The power efficiency as a percentage.
+ */
+float charging_get_power_efficiency();
+
 #endif	/* CHARGING_H */
 
 
