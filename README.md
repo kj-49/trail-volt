@@ -11,9 +11,9 @@
 | A6  | -             | -                                  |
 | A7  | -             | -                                  |
 | D0  | -             | -                                  |
-| D1  | DIGITAL IN    | Rotary Encoder Data Terminal       |
-| D2  | DIGITAL IN    | Rotary Encoder Button Terminal     |
-| D3  | DIGITAL IN    | Rotary Encoder Clock Terminal      |
+| D1  | DIGITAL IN    | Switch 1                           |
+| D2  | DIGITAL IN    | Menu change                        |
+| D3  | DIGITAL IN    | Menu confirm                       |
 | D4  | -             | -                                  |
 | D5  | DIGITAL OUT   | Gate Driver Shutdown Signal        |
 | D6  | DIGITAL OUT   | USB Enabled                        |
