@@ -1,6 +1,5 @@
 /* Setting DEBUG to 1 enables serial logging. */
 #include "debug.h"
-
 #include "display.h"
 #include "mode.h"
 #include "charging.h"
@@ -10,7 +9,7 @@
 #include "encoder.h"
 #include "interrupt.h"
 
-#define LOOP_DELAY_MS 10
+const int LOOP_DELAY_MS = 10;
 
 void setup()
 {

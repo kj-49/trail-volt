@@ -55,7 +55,7 @@ bool battery_balancing_needed()
     return (voltage_diff > BALANCE_THRESHOLD_V);
 }
 
-bool battery_is_fully_charged(power_metrics_t power_metrics)
+bool battery_is_fully_charged(battery_metrics_t battery_metrics)
 {
     /*
      * We will determine if our cell is fully charged by each individual cell voltage.
@@ -69,8 +69,28 @@ bool battery_is_fully_charged(power_metrics_t power_metrics)
      * indicate a fully charged cell.
      */
     float fully_charged_combined = FULLY_CHARGED_SINGLE_CELL_V * 2.0;
-    if (power_metrics.ina_bus_voltage_v > fully_charged_combined) {
+    if (battery_metrics.ina.bus_voltage_v > fully_charged_combined) {
         return true;
+    }
+
+    return false;
+}
+
+bool battery_is_depleted(battery_metrics_t battery_metrics)
+{
+    bool upper_depleted = battery_state.upper_cell_voltage_v < MINIMUM_SINGLE_CELL_V;
+    bool lower_depleted = battery_state.lower_cell_voltage_v < MINIMUM_SINGLE_CELL_V;
+
+    if (upper_depleted || lower_depleted) {
+        return true;
+    }
+
+    /*
+     * As an extra safety precaution, we will also verify that the INA reading
+     * from the total charge node is not below MINIMUM_SINGLE_CELL_V * 2.
+     */
+    if (battery_metrics.ina.bus_voltage_v < MINIMUM_SINGLE_CELL_V * 2) {
+      return true;
     }
 
     return false;
@@ -92,3 +112,43 @@ bool battery_in_discharge_temp_range()
     return ground_in_range && series_in_range;
 }
 
+float battery_get_upper_percentage()
+{
+    float voltage = battery_state.upper_cell_voltage_v;
+
+    /*
+    * We will normalize our battery percentage to our desired the max voltage.
+    * This may be lower than the batteries actual maximum voltage.
+    */
+    float percentage = (voltage / FULLY_CHARGED_SINGLE_CELL_V) * 100;
+
+    return percentage;
+}
+
+float battery_get_lower_percentage()
+{
+    float voltage = battery_state.lower_cell_voltage_v;
+
+    /*
+    * We will normalize our battery percentage to our desired the max voltage.
+    * This may be lower than the batteries actual maximum voltage.
+    */
+    float percentage = (voltage / FULLY_CHARGED_SINGLE_CELL_V) * 100;
+
+    return percentage;
+}
+
+float battery_get_total_percentage()
+{
+    float total_voltage = battery_state.upper_cell_voltage_v + battery_state.lower_cell_voltage_v;
+
+    float maximum_series_voltage = FULLY_CHARGED_SINGLE_CELL_V * 2;
+
+    /*
+    * We will normalize our battery percentage to our desired the max voltage.
+    * This may be lower than the batteries actual maximum voltage.
+    */
+    float percentage = (total_voltage / maximum_series_voltage) * 100;
+
+    return percentage;
+}

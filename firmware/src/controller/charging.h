@@ -6,32 +6,39 @@
 #include <stdint.h>
 
 // App Voltage = ADC reading * CHARGE_VOLTAGE_DIVIDER_RATIO
-#define CHARGE_VOLTAGE_DIVIDER_RATIO 3.925f
+const float CHARGE_VOLTAGE_DIVIDER_RATIO = 3.925;
 
 /**
  * The acceptable difference between CHARGING_VOLTAGE_V and our current charging.
  */
-#define CHARING_VOLTAGE_TOLERANCE 0.050f
+const float CHARING_VOLTAGE_TOLERANCE = 0.050;
 
 /*
  * At this error value, set the pwm step to minimum.
  */
-#define SLOW_STEP_THESHOLD_V 1.00f
+const float SLOW_STEP_THESHOLD_V = 1.00;
 
-#define CHARGING_VOLTAGE_V 8.2f
+const float CHARGING_VOLTAGE_V = 8.2;
 
-#define MAX_CHARGE_CURRENT_mA 500.0f
+const float MAX_CHARGE_CURRENT_mA = 500.0;
+
+// A0 & A1 tied to VSS
+#define BATTERY_INA_ADDRESS 0x40
 
 typedef struct {
-  float ina_current_ma;
-  float ina_bus_voltage_v;
-  float ina_power_w;
-  float buck_voltage_v;
-} power_metrics_t;
+  float current_ma;
+  float bus_voltage_v;
+  float power_w;
+} ina_metrics_t;
+
+typedef struct {
+    ina_metrics_t ina;
+} battery_metrics_t;
 
 typedef struct {
   uint8_t duty_cycle_uint8;
-  power_metrics_t power_metrics;
+  float buck_voltage_v;
+  battery_metrics_t battery_metrics;
 } charging_state_t;
 
 /**
