@@ -3,7 +3,6 @@
 #define	DISPLAY_H
 
 #include "mode.h"
-#include <Adafruit_GFX.h>
 #include "battery.h"
 #include "charging.h"
 

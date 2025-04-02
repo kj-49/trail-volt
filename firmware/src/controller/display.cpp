@@ -2,6 +2,7 @@
 #include "display.h"
 #include "menu.h"
 #include "debug.h"
+#include <Wire.h>
 
 #define TITLE_FONT u8g2_font_BBSesque_tr                
 #define MEDIUM_FONT u8g2_font_smallsimple_tr              
