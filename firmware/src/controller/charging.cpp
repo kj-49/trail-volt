@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include "hal.h"
 #include "charging.h"
 #include "gpio.h"
 #include "adc.h"
@@ -89,9 +89,9 @@ void charging_set_shutdown_pin(bool shutdown)
 {
     if (shutdown) {
         pinMode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
-        digitalWrite(H_BRIDGE_SHUT_DOWN_PIN_AL, LOW);
+        hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, LOW);
     } else {
-        pinMode(H_BRIDGE_SHUT_DOWN_PIN_AL, INPUT_PULLUP);
+        hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, INPUT_PULLUP);
     }
 }
 

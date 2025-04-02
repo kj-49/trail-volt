@@ -1,28 +1,28 @@
 #include "gpio.h"
-#include <Arduino.h>
+#include "hal.h"
 
 void gpio_init()
 {
-    pinMode(THERMISTOR_1_PIN, INPUT);
-    pinMode(THERMISTOR_2_PIN, INPUT);
+    hal_pin_mode(THERMISTOR_1_PIN, INPUT);
+    hal_pin_mode(THERMISTOR_2_PIN, INPUT);
 
-    pinMode(TOTAL_CELL_ADC_PIN, INPUT);
-    pinMode(LOWER_CELL_ADC_PIN, INPUT);
+    hal_pin_mode(TOTAL_CELL_ADC_PIN, INPUT);
+    hal_pin_mode(LOWER_CELL_ADC_PIN, INPUT);
 
-    pinMode(ENCODER_DT_PIN, INPUT);
-    pinMode(ENCODER_SW_PIN, INPUT_PULLUP);
-    pinMode(ENCODER_CLK_PIN, INPUT);
+    hal_pin_mode(ENCODER_DT_PIN, INPUT);
+    hal_pin_mode(ENCODER_SW_PIN, INPUT_PULLUP);
+    hal_pin_mode(ENCODER_CLK_PIN, INPUT);
 
     // Keep pin high by default (shutdown off)
-    pinMode(H_BRIDGE_SHUT_DOWN_PIN_AL, INPUT_PULLUP);
+    hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, INPUT_PULLUP);
 
     // Keep high always
-    pinMode(USB_ENABLE_PIN, OUTPUT);
-    digitalWrite(USB_ENABLE_PIN, LOW);
+    hal_pin_mode(USB_ENABLE_PIN, OUTPUT);
+    hal_pin_mode(USB_ENABLE_PIN, LOW);
 
-    pinMode(C1_BALANCING_PIN, OUTPUT);
-    pinMode(C2_BALANCING_PIN, OUTPUT);
+    hal_pin_mode(C1_BALANCING_PIN, OUTPUT);
+    hal_pin_mode(C2_BALANCING_PIN, OUTPUT);
 
-    pinMode(CHARGE_PWM_PIN, OUTPUT);
+    hal_pin_mode(CHARGE_PWM_PIN, OUTPUT);
 
 }

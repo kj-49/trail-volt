@@ -1,5 +1,6 @@
-#include <Arduino.h>
+#include "hal.h"
 #include "adc.h"
+#include <stdint.h>
 
 #define ADC_SAMPLES 10
 
@@ -20,8 +21,8 @@ float adc_read(int pin, float voltage_divider_ratio)
     uint32_t total = 0;
 
     for (int i = 0; i < ADC_SAMPLES; i++) {
-        total += analogRead(pin);
-        delay(2);  // Small delay to ensure stable readings
+        total += hal_analog_read(pin);
+        hal_delay(2);  // Small delay to ensure stable readings
     }
 
     uint16_t averaged_value = total / ADC_SAMPLES;

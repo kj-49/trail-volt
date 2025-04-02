@@ -3,7 +3,7 @@
 #include "adc.h"
 #include <math.h>
 #include "temperature.h"
-#include <Arduino.h>
+#include "hal.h"
 
 static battery_state_t battery_state;
 
@@ -15,10 +15,10 @@ battery_state_t battery_get_state()
 void battery_set_upper_discharge(bool discharge)
 {
     if (discharge) {
-        digitalWrite(C2_BALANCING_PIN, HIGH);
+        hal_digital_write(C2_BALANCING_PIN, HIGH);
         battery_state.upper_discharging = true;
     } else {
-        digitalWrite(C2_BALANCING_PIN, LOW);
+        hal_digital_write(C2_BALANCING_PIN, LOW);
         battery_state.upper_discharging = false;
     }
 }
@@ -26,10 +26,10 @@ void battery_set_upper_discharge(bool discharge)
 void battery_set_lower_discharge(bool discharge)
 {
     if (discharge) {
-        digitalWrite(C1_BALANCING_PIN, HIGH);
+        hal_digital_write(C1_BALANCING_PIN, HIGH);
         battery_state.lower_discharging = true;
     } else {
-        digitalWrite(C1_BALANCING_PIN, LOW);
+        hal_digital_write(C1_BALANCING_PIN, LOW);
         battery_state.lower_discharging = false;
     }
 }

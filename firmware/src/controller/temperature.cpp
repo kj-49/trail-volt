@@ -8,12 +8,12 @@
  * @brief  Gets the resistance by reading the voltage drop across the thermistor.
  * @return The resistance in Ohms.
  */
-static float get_resistance(int pin)
+float get_resistance(int pin)
 {
     float voltage = adc_read(pin, THERMISTOR_ADC_DIVISION);
 
     // Thermistors are on high-side of dividers
-    float resistance = ((5.0f * SERIES_RESISTOR) / voltage) - SERIES_RESISTOR;
+    float resistance = ((ADC_VREF_CALIBRATED * SERIES_RESISTOR) / voltage) - SERIES_RESISTOR;
 
     return resistance;
 }

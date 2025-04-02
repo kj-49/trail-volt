@@ -1,13 +1,13 @@
 #include "supplying.h"
-#include <Arduino.h>
+#include "hal.h"
 #include "gpio.h"
 
 bool supplying_disable()
 {
-    digitalWrite(USB_ENABLE_PIN, LOW);
+    hal_digital_write(USB_ENABLE_PIN, LOW);
 }
 
 bool supplying_enable()
 {
-    digitalWrite(USB_ENABLE_PIN, HIGH);
+    hal_digital_write(USB_ENABLE_PIN, HIGH);
 }
