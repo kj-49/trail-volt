@@ -1,22 +1,20 @@
 
 #ifndef GPIO_H
 #define	GPIO_H
-
-#include <Arduino.h>
  
 /* Thermistor at ground connection */
-const int THERMISTOR_1_PIN = A0;
+const int THERMISTOR_1_PIN = 14; // A0
 
 /* Thermistor at series connection */
-const int THERMISTOR_2_PIN = A1;
+const int THERMISTOR_2_PIN = 15; // A1
 
-const int TOTAL_CELL_ADC_PIN = A2;
-const int LOWER_CELL_ADC_PIN = A3;
+const int TOTAL_CELL_ADC_PIN = 16; // A2
+const int LOWER_CELL_ADC_PIN = 17; // A3
 
 // A4 & A5 are used for I2C  
 
 /* A6 not functional on current board */
-const int CHARGE_VOLTAGE_PIN = A7;
+const int CHARGE_VOLTAGE_PIN = 21; // A7
 
 /* Rotary encoder dt pin. */
 const int ENCODER_DT_PIN = 1;

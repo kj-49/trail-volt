@@ -49,6 +49,11 @@ typedef struct {
 battery_state_t battery_get_state();
 
 /**
+ * @brief  Sets the battery state.
+ */
+void battery_set_state(battery_state_t state);
+
+/**
  * @brief  Sets GPIO pin fed to upper cell discharge accordingly.
  * @param  discharge: True to discharge the cell.
  */

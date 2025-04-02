@@ -1,0 +1,57 @@
+name: Run Tests
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create output directory
+        run: |
+          # Create the output directory if it doesn't exist
+          mkdir -p "${GITHUB_WORKSPACE}/firmware/test/output"
+
+      - name: Build ADC Tests
+        run: |
+          g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/adc_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/adc.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/adc_tests.exe"
+
+      - name: Build Temperature Tests
+        run: |
+          g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/temperature_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/temperature.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
+
+      - name: Build Battery Tests
+        run: |
+          g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/battery_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/battery.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/battery_tests.exe"
+
+      - name: Run ADC Tests
+        run: |
+          "${GITHUB_WORKSPACE}/firmware/test/output/adc_tests.exe"
+
+      - name: Run Temperature Tests
+        run: |
+          "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
+         
+      - name: Run Battery Tests
+        run: |
+          "${GITHUB_WORKSPACE}/firmware/test/output/battery_tests.exe"

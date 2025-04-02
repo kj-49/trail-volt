@@ -1,5 +1,6 @@
 #include "encoder.h"
 #include "gpio.h"
+#include "hal.h"
 
 static encoder_event_e pending_event;
 static unsigned long last_button_press_ms = 0;
@@ -19,10 +20,10 @@ encoder_event_e encoder_get_event()
 
 void encoder_handle_clk_rising()
 {
-    int dt = digitalRead(ENCODER_DT_PIN);
+    int dt = hal_digital_read(ENCODER_DT_PIN);
 
     // If the clk is different from dt, the encoder is moving clockwise
-    if (dt != HIGH) {
+    if (dt != true) {
       pending_event = ENCODER_EVENT_CLOCKWISE;
     } else {
       pending_event = ENCODER_EVENT_COUNTERCLOCKWISE;
@@ -31,7 +32,7 @@ void encoder_handle_clk_rising()
 
 void encoder_handle_btn_press()
 {
-    unsigned long current_count = millis();
+    unsigned long current_count = hal_millis();
 
     /*
      * To debounce button press, only register if last button press
