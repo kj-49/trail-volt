@@ -2,7 +2,27 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Tests",
+            "label": "Build ADC Tests",
+            "type": "shell",
+            "command": "C:/MinGW/bin/g++.exe",
+            "args": [
+                "-Wall", "-Wextra", "-g3",
+                "-DUNIT_TEST",
+                "-I../../lib/unity",
+                "-I../src",
+                "${workspaceFolder}/firmware/test/adc_tests.cpp",
+                "${workspaceFolder}/firmware/src/controller/adc.cpp",
+                "${workspaceFolder}/firmware/test/unity/unity.c",
+                "-o",
+                "${workspaceFolder}/firmware/test/output/adc_tests.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Temperature Tests",
             "type": "shell",
             "command": "C:/MinGW/bin/g++.exe",
             "args": [
@@ -18,7 +38,16 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
+            }
+        },
+        {
+            "label": "Build All Tests",
+            "type": "shell",
+            "dependsOn": ["Build ADC Tests", "Build Temperature Tests"],
+            "group": {
+              "kind": "build",
+              "isDefault": true
             }
         }
     ]

@@ -1,19 +1,15 @@
 #include "unity/unity.h"
+#include "fff.h"
 #include "../src/controller/temperature.h"
+#include "../src/controller/adc.h"
 
-// Mocked adc_read function
-float adc_read(int pin, float division) 
-{
-    if (pin == 1) {
-        return 2.0f;
-    } else if (pin == 2) {
-        return 3.0f;
-    }
-    return 0.0f;
-}
+DEFINE_FFF_GLOBALS;
+
+FAKE_VALUE_FUNC(float, adc_read, int, float);
 
 void setUp(void) 
 {
+    RESET_FAKE(adc_read);
 }
 
 void tearDown(void) 
@@ -22,19 +18,28 @@ void tearDown(void)
 
 void test_get_resistance(void)
 {
-    // Test case 1: Pin 1, voltage of 2V
-    float resistance = get_resistance(1);
-
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, 16666.67f, resistance);
+    adc_read_fake.return_val = 2.0f;
     
-    // Test case 2: Pin 2, voltage of 3V
-    resistance = get_resistance(2);
+    float resistance = get_resistance(1); 
 
-    TEST_ASSERT_FLOAT_WITHIN(0.1f, 25000.0f, resistance);
+    float expected_resistance = ((ADC_VREF_CALIBRATED * SERIES_RESISTOR) / 2.0f) - SERIES_RESISTOR;
+    
+    TEST_ASSERT_FLOAT_WITHIN(0.1f, expected_resistance, resistance);
+}
+
+void test_get_resistance_should_be_zero_if_vcc(void)
+{
+    adc_read_fake.return_val = ADC_VREF_CALIBRATED;
+    
+    float resistance = get_resistance(1); 
+
+    // Since high-side, an ADC reading of max voltage should translate to a short
+    TEST_ASSERT_FLOAT_WITHIN(0.025f, 0, resistance);
 }
 
 int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_get_resistance);
+    RUN_TEST(test_get_resistance_should_be_zero_if_vcc);
     return UNITY_END();
 }
