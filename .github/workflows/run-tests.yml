@@ -20,16 +20,30 @@ jobs:
           # Create the output directory if it doesn't exist
           mkdir -p "${GITHUB_WORKSPACE}/firmware/test/output"
 
-      - name: Build Unity Test Executable
+      - name: Build ADC Tests
         run: |
-          # Build the test executable using GCC
+          # Build ADC tests using GCC
+          g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/adc_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/adc.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/adc_tests.exe"
+
+      - name: Build Temperature Tests
+        run: |
+          # Build Temperature tests using GCC
           g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
           "${GITHUB_WORKSPACE}/firmware/test/temperature_tests.cpp" \
           "${GITHUB_WORKSPACE}/firmware/src/controller/temperature.cpp" \
           "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
           -o "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
 
-      - name: Run Unity Tests
+      - name: Run ADC Tests
         run: |
-          # Run the tests
+          # Run ADC tests
+          "${GITHUB_WORKSPACE}/firmware/test/output/adc_tests.exe"
+
+      - name: Run Temperature Tests
+        run: |
+          # Run Temperature tests
           "${GITHUB_WORKSPACE}/firmware/test/output/temperature_tests.exe"
