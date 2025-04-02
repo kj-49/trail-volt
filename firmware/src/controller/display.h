@@ -4,13 +4,13 @@
 
 #include "mode.h"
 #include <Adafruit_GFX.h>
-#include <Adafruit_SH110X.h>
 #include "battery.h"
 #include "charging.h"
 
+// Un-comment the definition below if using the SSD1306 instead of the SH1106.
+// #define USE_SSD1306
 
-
-#define i2c_address 0x3c
+#define DISPLAY_I2C_ADDRESS 0x3c
 
 #define DISP_WIDTH 128
 #define DISP_HEIGHT 64

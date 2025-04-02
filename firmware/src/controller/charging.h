@@ -3,36 +3,52 @@
 #define	CHARGING_H
 
 #include "mode.h"
+#include <stdint.h>
 
 // App Voltage = ADC reading * CHARGE_VOLTAGE_DIVIDER_RATIO
-#define CHARGE_VOLTAGE_DIVIDER_RATIO 3.925f
+const float CHARGE_VOLTAGE_DIVIDER_RATIO = 3.925;
 
 /**
  * The acceptable difference between CHARGING_VOLTAGE_V and our current charging.
  */
-#define CHARING_VOLTAGE_TOLERANCE 0.050f
+const float CHARING_VOLTAGE_TOLERANCE = 0.050;
 
 /*
  * At this error value, set the pwm step to minimum.
  */
-#define SLOW_STEP_THESHOLD_V 1.00f
+const float SLOW_STEP_THESHOLD_V = 1.00;
 
-#define CHARGING_VOLTAGE_V 8.2f
+const float CHARGING_VOLTAGE_V = 8.2;
 
-#define MAX_CHARGE_CURRENT_A 0.5f
+const float MAX_CHARGE_CURRENT_mA = 500.0;
 
-typedef struct {
-  float ina_current_ma;
-  float ina_bus_voltage_v;
-  float ina_power_w;
-  float charge_voltage_v;
-} power_metrics_t;
+// A0 & A1 tied to GND
+#define SUPPLY_INA_ADDRESS 0x45
+// A0 & A1 tied to VSS
+#define BATTERY_INA_ADDRESS 0x40
 
 typedef struct {
-  bool is_charging;
-  bool is_over_current;
+  float current_ma;
+  float bus_voltage_v;
+  float power_w;
+} ina_metrics_t;
+
+/*
+ * Wrap the types for better type safety throughout the code.
+ */
+typedef struct {
+    ina_metrics_t ina;
+} battery_metrics_t;
+
+typedef struct {
+    ina_metrics_t ina;
+} supply_metrics_t;
+
+typedef struct {
   uint8_t duty_cycle_uint8;
-  power_metrics_t power_metrics;
+  float buck_voltage_v;
+  battery_metrics_t battery_metrics;
+  supply_metrics_t supply_metrics;
 } charging_state_t;
 
 /**
@@ -73,6 +89,12 @@ uint8_t charging_calculate_duty_cycle();
  * @return True if within the allowable limits.
  */
 bool charging_current_within_limits();
+
+/**
+ * @brief  Calculates the power efficiency of our charging circuit.
+ * @return The power efficiency as a percentage.
+ */
+float charging_get_power_efficiency();
 
 #endif	/* CHARGING_H */
 

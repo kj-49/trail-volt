@@ -24,59 +24,99 @@ void state_manager_update_mode()
     battery_state_t battery_state = battery_get_state();
     charging_state_t charging_state = charging_get_state();
 
-    bool needs_balancing = battery_balancing_needed();
-    
     // Initialize next mode to current mode
     mode_e current_mode = mode_get();
     mode_e next_mode = current_mode;
 
     switch (current_mode) {
         case MODE_RECEIVING:
-            if (needs_balancing) {
+            if (!battery_in_charge_temp_range()) {
+                next_mode = MODE_BATTERY_OVERTEMP;
+                break;
+            }
+            if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
                 break;
             }
-            if (charging_state.is_over_current) {
+            if (!charging_current_within_limits()) {
                 next_mode = MODE_CHARGING_FAULT;
                 break;
             }
+            if (battery_is_fully_charged(charging_state.battery_metrics)) {
+                next_mode = MODE_MONITORING;
+                break;
+            }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
               // Button press indicates the user would to be presented the menu
               next_mode = MODE_MENU;
+              break;
             }
             break;
         case MODE_CHARGING_FAULT:
-            if (!charging_state.is_over_current) {
-                next_mode = MODE_MONITORING;
+            /*
+             * In the event of a charging fault, require manual intervention.
+             */
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+              // Button press indicates the user would to be presented the menu
+              next_mode = MODE_MENU;
+              break;
             }
             break;
         case MODE_SUPPLYING:
-            if (needs_balancing) {
+            if (!battery_in_discharge_temp_range()) {
+                next_mode = MODE_BATTERY_OVERTEMP;
+                break;
+            }
+            if (battery_is_depleted(charging_state.battery_metrics)) {
+                next_mode = MODE_BATTERY_UNDER_MIN;
+                break;
+            }
+            if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
                 break;
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         case MODE_MONITORING: {
-            if (needs_balancing) {
+            if (battery_balancing_needed()) {
                 next_mode = MODE_BALANCING;
                 break;
             }
             // If no crucial tasks need to be taken, listen for user input
             if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
-              // Button press indicates the user would to be presented the menu
-              next_mode = MODE_MENU;
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
             }
             break;
         }
         case MODE_BALANCING:
-            if (!needs_balancing) {
+            if (!battery_in_discharge_temp_range()) {
+                next_mode = MODE_BATTERY_OVERTEMP;
+                break;
+            }
+            if (battery_is_depleted(charging_state.battery_metrics)) {
+                next_mode = MODE_BATTERY_UNDER_MIN;
+                break;
+            }
+            if (!battery_balancing_needed()) {
                 next_mode = MODE_MONITORING;
+                break;
+            }
+            break;
+        case MODE_BATTERY_OVERTEMP:
+            /*
+             * In the event of battery overtemperature, require manual intervention.
+             */
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
                 break;
             }
             break;
@@ -89,9 +129,20 @@ void state_manager_update_mode()
             } else {
                 // If not a button press, update the menu state.
                 menu_update_state(event);
+                break;
             }
             break;
         }
+        case MODE_BATTERY_UNDER_MIN:
+            /*
+             * In the event of battery under voltage, require manual intervention.
+             */
+            if (encoder_get_event() == ENCODER_EVENT_BUTTON_PRESS) {
+                // Button press indicates the user would to be presented the menu
+                next_mode = MODE_MENU;
+                break;
+            }
+            break;
         default:
             next_mode = MODE_MONITORING;
             break;
@@ -120,15 +171,6 @@ void state_manager_apply_hardware_updates()
                 battery_set_lower_discharge(true);
             }
             break;
-        case MODE_CHARGING_FAULT:
-            // Stop charging
-            charging_stop(); 
-            // Stop supplying (shouldn't be anyways)
-            supplying_disable();
-            // Stop discharging (shouldn't be anyways)
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
         case MODE_RECEIVING:
             supplying_disable();
             battery_set_upper_discharge(false);
@@ -136,19 +178,12 @@ void state_manager_apply_hardware_updates()
             
             charging_set_duty_cycle(charging_calculate_duty_cycle());
             break;
+        case MODE_CHARGING_FAULT:
         case MODE_SUPPLYING:
-            charging_stop();
-            supplying_enable();
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
         case MODE_MONITORING:
-            charging_stop();
-            supplying_disable();
-            battery_set_upper_discharge(false);
-            battery_set_lower_discharge(false);
-            break;
+        case MODE_BATTERY_OVERTEMP:
         case MODE_MENU:
+        case MODE_BATTERY_UNDER_MIN:
             charging_stop();
             supplying_disable();
             battery_set_upper_discharge(false);

@@ -1,16 +1,37 @@
-
 #ifndef BATTERY_H
 #define	BATTERY_H
 
 #include "mode.h"
+#include "charging.h"
 
-#define TOTAL_CELL_ADC_DIVISION 4.0f
-#define LOWER_CELL_ADC_DIVISION 4.0f
+const float TOTAL_CELL_ADC_DIVISION = 4.0;
+const float LOWER_CELL_ADC_DIVISION = 4.0;
 
 /**
  * The tolerable difference between the upper and lower cell voltages.
  */
-#define BALANCE_THRESHOLD_V 0.1
+const float BALANCE_THRESHOLD_V = 0.1;
+
+/*
+ * This is the single cell voltage we wish to charge our cells to.
+ * 18650 lithium-ion cells can be charge to 4.2V for maximum capacity,
+ * but charging to 4.0V is safer with the tradeoff of less capacity.
+ */
+const float FULLY_CHARGED_SINGLE_CELL_V = 4.0;
+
+/*
+ * This is minimum voltage our cells should be discharged to.
+ */
+const float MINIMUM_SINGLE_CELL_V = 2.5;
+
+/*
+ * INR-18650-P30B charging temperature range is 0C to 60C. The discharging
+ * range is -40C to 60C.
+ */
+static const float MAX_CHARGING_TEMP_C = 40.0;
+static const float MIN_CHARGING_TEMP_C = 0.0;
+static const float MAX_DISCHARGING_TEMP_C = 40.0;
+static const float MIN_DISCHARGING_TEMP_C = -20.0;
 
 typedef struct {
     float upper_cell_voltage_v;
@@ -55,6 +76,48 @@ bool battery_balancing_needed();
  * @return The difference between the upper and lower cell voltages.
  */
 float battery_get_voltage_difference();
+
+/**
+ * @brief  Determines whether the batteries are fully charged.
+ * @return True if fully charged.
+ */
+bool battery_is_fully_charged(battery_metrics_t battery_metrics);
+
+/**
+ * @brief  Determines whether the batteries are depleted
+ * @return True if battery charge is below depletion threshold.
+ */
+bool battery_is_depleted(battery_metrics_t battery_metrics);
+
+/**
+ * @brief  Determines whether the batteries are within the allowable charging temperature.
+ * @return True if in temperature range.
+ */
+bool battery_in_charge_temp_range();
+
+/**
+ * @brief  Determines whether the batteries are within the allowable discharging temperature.
+ * @return True if in temperature range.
+ */
+bool battery_in_discharge_temp_range();
+
+/**
+ * @brief  Calculates the upper battery charge percentage.
+ * @return The percentage.
+ */
+float battery_get_upper_percentage();
+
+/**
+ * @brief  Calculates the upper battery charge percentage.
+ * @return The percentage.
+ */
+float battery_get_lower_percentage();
+
+/**
+ * @brief  Calculates the total series battery charge percentage.
+ * @return The percentage.
+ */
+float battery_get_total_percentage();
 
 #endif	/* BATTERY_H */
 
