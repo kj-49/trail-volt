@@ -12,6 +12,11 @@ battery_state_t battery_get_state()
     return battery_state;
 }
 
+void battery_set_state(battery_state_t state)
+{
+    battery_state = state;
+}
+
 void battery_set_upper_discharge(bool discharge)
 {
     if (discharge) {
