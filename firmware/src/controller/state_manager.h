@@ -2,8 +2,6 @@
 #ifndef STATE_MANAGER_H
 #define STATE_MANAGER_H
 
-#include <Adafruit_INA260.h>
-
 /**
  * @brief  Initialize the state manager.
  */
