@@ -8,7 +8,6 @@
             "args": [
                 "-Wall", "-Wextra", "-g3",
                 "-DUNIT_TEST",
-                "-I../../lib/unity",
                 "-I../src",
                 "${workspaceFolder}/firmware/test/adc_tests.cpp",
                 "${workspaceFolder}/firmware/src/controller/adc.cpp",
@@ -28,7 +27,6 @@
             "args": [
                 "-Wall", "-Wextra", "-g3",
                 "-DUNIT_TEST",
-                "-I../../lib/unity",
                 "-I../src",
                 "${workspaceFolder}/firmware/test/temperature_tests.cpp",
                 "${workspaceFolder}/firmware/src/controller/temperature.cpp",
@@ -42,9 +40,28 @@
             }
         },
         {
+            "label": "Build Battery Tests",
+            "type": "shell",
+            "command": "C:/MinGW/bin/g++.exe",
+            "args": [
+                "-Wall", "-Wextra", "-g3",
+                "-DUNIT_TEST",
+                "-I../src",
+                "${workspaceFolder}/firmware/test/battery_tests.cpp",
+                "${workspaceFolder}/firmware/src/controller/battery.cpp",
+                "${workspaceFolder}/firmware/test/unity/unity.c",
+                "-o",
+                "${workspaceFolder}/firmware/test/output/battery_tests.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
             "label": "Build All Tests",
             "type": "shell",
-            "dependsOn": ["Build ADC Tests", "Build Temperature Tests"],
+            "dependsOn": ["Build ADC Tests", "Build Temperature Tests", "Build Battery Tests"],
             "group": {
               "kind": "build",
               "isDefault": true
