@@ -130,11 +130,63 @@ void test_battery_is_fully_charged(void)
     TEST_ASSERT_FALSE(battery_is_fully_charged(metrics));
 }
 
+void test_battery_is_depleted(void)
+{
+    battery_metrics_t metrics;
+    metrics.ina.bus_voltage_v = 6.0f; // Default value (MINIMUM_SINGLE_CELL_V * 2 is typically 6.0f)
+
+    // Both cells above minimum, INA voltage above minimum - not depleted
+    battery_state_t normal_state = {};
+    normal_state.upper_cell_voltage_v = MINIMUM_SINGLE_CELL_V + 0.1f;
+    normal_state.lower_cell_voltage_v = MINIMUM_SINGLE_CELL_V + 0.1f;
+    battery_set_state(normal_state);
+    metrics.ina.bus_voltage_v = (MINIMUM_SINGLE_CELL_V * 2) + 0.1f;
+    TEST_ASSERT_FALSE(battery_is_depleted(metrics));
+
+    // Upper cell depleted
+    battery_state_t upper_depleted_state = {};
+    upper_depleted_state.upper_cell_voltage_v = MINIMUM_SINGLE_CELL_V - 0.1f;
+    upper_depleted_state.lower_cell_voltage_v = MINIMUM_SINGLE_CELL_V + 0.1f;
+    battery_set_state(upper_depleted_state);
+    TEST_ASSERT_TRUE(battery_is_depleted(metrics));
+
+    // Lower cell depleted
+    battery_state_t lower_depleted_state = {};
+    lower_depleted_state.upper_cell_voltage_v = MINIMUM_SINGLE_CELL_V + 0.1f;
+    lower_depleted_state.lower_cell_voltage_v = MINIMUM_SINGLE_CELL_V - 0.1f;
+    battery_set_state(lower_depleted_state);
+    TEST_ASSERT_TRUE(battery_is_depleted(metrics));
+
+    // Both cells depleted
+    battery_state_t both_depleted_state = {};
+    both_depleted_state.upper_cell_voltage_v = MINIMUM_SINGLE_CELL_V - 0.1f;
+    both_depleted_state.lower_cell_voltage_v = MINIMUM_SINGLE_CELL_V - 0.1f;
+    battery_set_state(both_depleted_state);
+    TEST_ASSERT_TRUE(battery_is_depleted(metrics));
+
+    // Cells OK but INA voltage below threshold
+    battery_state_t cells_ok_state = {};
+    cells_ok_state.upper_cell_voltage_v = MINIMUM_SINGLE_CELL_V + 0.1f;
+    cells_ok_state.lower_cell_voltage_v = MINIMUM_SINGLE_CELL_V + 0.1f;
+    battery_set_state(cells_ok_state);
+    metrics.ina.bus_voltage_v = (MINIMUM_SINGLE_CELL_V * 2) - 0.1f;
+    TEST_ASSERT_TRUE(battery_is_depleted(metrics));
+
+    // Edge case - exactly at minimum voltage
+    battery_state_t edge_case_state = {};
+    edge_case_state.upper_cell_voltage_v = MINIMUM_SINGLE_CELL_V;
+    edge_case_state.lower_cell_voltage_v = MINIMUM_SINGLE_CELL_V;
+    battery_set_state(edge_case_state);
+    metrics.ina.bus_voltage_v = MINIMUM_SINGLE_CELL_V * 2;
+    TEST_ASSERT_FALSE(battery_is_depleted(metrics));
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_set_upper_discharge);
     RUN_TEST(test_set_lower_discharge);
     RUN_TEST(test_battery_is_fully_charged);
+    RUN_TEST(test_battery_is_depleted);
     return UNITY_END();
 }
