@@ -181,6 +181,141 @@ void test_battery_is_depleted(void)
     TEST_ASSERT_FALSE(battery_is_depleted(metrics));
 }
 
+void test_battery_in_charge_temp_range(void)
+{
+    // Test case 1: Both temperatures within charging range
+    battery_state_t normal_state = {};
+    normal_state.ground_temperature_c = (MAX_CHARGING_TEMP_C + MIN_CHARGING_TEMP_C) / 2;
+    normal_state.series_temperature_c = (MAX_CHARGING_TEMP_C + MIN_CHARGING_TEMP_C) / 2;
+    battery_set_state(normal_state);
+    TEST_ASSERT_TRUE(battery_in_charge_temp_range());
+
+    // Test case 2: Ground temp too low
+    battery_state_t low_ground_state = {};
+    low_ground_state.ground_temperature_c = MIN_CHARGING_TEMP_C - 1.0f;
+    low_ground_state.series_temperature_c = (MAX_CHARGING_TEMP_C + MIN_CHARGING_TEMP_C) / 2;
+    battery_set_state(low_ground_state);
+    TEST_ASSERT_FALSE(battery_in_charge_temp_range());
+
+    // Test case 3: Ground temp too high
+    battery_state_t high_ground_state = {};
+    high_ground_state.ground_temperature_c = MAX_CHARGING_TEMP_C + 1.0f;
+    high_ground_state.series_temperature_c = (MAX_CHARGING_TEMP_C + MIN_CHARGING_TEMP_C) / 2;
+    battery_set_state(high_ground_state);
+    TEST_ASSERT_FALSE(battery_in_charge_temp_range());
+
+    // Test case 4: Series temp too low
+    battery_state_t low_series_state = {};
+    low_series_state.ground_temperature_c = (MAX_CHARGING_TEMP_C + MIN_CHARGING_TEMP_C) / 2;
+    low_series_state.series_temperature_c = MIN_CHARGING_TEMP_C - 1.0f;
+    battery_set_state(low_series_state);
+    TEST_ASSERT_FALSE(battery_in_charge_temp_range());
+
+    // Test case 5: Series temp too high
+    battery_state_t high_series_state = {};
+    high_series_state.ground_temperature_c = (MAX_CHARGING_TEMP_C + MIN_CHARGING_TEMP_C) / 2;
+    high_series_state.series_temperature_c = MAX_CHARGING_TEMP_C + 1.0f;
+    battery_set_state(high_series_state);
+    TEST_ASSERT_FALSE(battery_in_charge_temp_range());
+
+    // Test case 6: Edge cases - exactly at boundaries
+    battery_state_t edge_case_state = {};
+    edge_case_state.ground_temperature_c = MIN_CHARGING_TEMP_C + 0.001f;
+    edge_case_state.series_temperature_c = MAX_CHARGING_TEMP_C - 0.001f;
+    battery_set_state(edge_case_state);
+    TEST_ASSERT_TRUE(battery_in_charge_temp_range());
+}
+
+void test_battery_in_discharge_temp_range(void)
+{
+    // Both temperatures within discharging range
+    battery_state_t normal_state = {};
+    normal_state.ground_temperature_c = (MAX_DISCHARGING_TEMP_C + MIN_DISCHARGING_TEMP_C) / 2;
+    normal_state.series_temperature_c = (MAX_DISCHARGING_TEMP_C + MIN_DISCHARGING_TEMP_C) / 2;
+    battery_set_state(normal_state);
+    TEST_ASSERT_TRUE(battery_in_discharge_temp_range());
+
+    // Ground temp too low
+    battery_state_t low_ground_state = {};
+    low_ground_state.ground_temperature_c = MIN_DISCHARGING_TEMP_C - 1.0f;
+    low_ground_state.series_temperature_c = (MAX_DISCHARGING_TEMP_C + MIN_DISCHARGING_TEMP_C) / 2;
+    battery_set_state(low_ground_state);
+    TEST_ASSERT_FALSE(battery_in_discharge_temp_range());
+
+    // Ground temp too high
+    battery_state_t high_ground_state = {};
+    high_ground_state.ground_temperature_c = MAX_DISCHARGING_TEMP_C + 1.0f;
+    high_ground_state.series_temperature_c = (MAX_DISCHARGING_TEMP_C + MIN_DISCHARGING_TEMP_C) / 2;
+    battery_set_state(high_ground_state);
+    TEST_ASSERT_FALSE(battery_in_discharge_temp_range());
+
+    // Series temp too low
+    battery_state_t low_series_state = {};
+    low_series_state.ground_temperature_c = (MAX_DISCHARGING_TEMP_C + MIN_DISCHARGING_TEMP_C) / 2;
+    low_series_state.series_temperature_c = MIN_DISCHARGING_TEMP_C - 1.0f;
+    battery_set_state(low_series_state);
+    TEST_ASSERT_FALSE(battery_in_discharge_temp_range());
+
+    // Series temp too high
+    battery_state_t high_series_state = {};
+    high_series_state.ground_temperature_c = (MAX_DISCHARGING_TEMP_C + MIN_DISCHARGING_TEMP_C) / 2;
+    high_series_state.series_temperature_c = MAX_DISCHARGING_TEMP_C + 1.0f;
+    battery_set_state(high_series_state);
+    TEST_ASSERT_FALSE(battery_in_discharge_temp_range());
+
+    // Edge cases - exactly at boundaries
+    battery_state_t edge_case_state = {};
+    edge_case_state.ground_temperature_c = MIN_DISCHARGING_TEMP_C + 0.001f;
+    edge_case_state.series_temperature_c = MAX_DISCHARGING_TEMP_C - 0.001f;
+    battery_set_state(edge_case_state);
+    TEST_ASSERT_TRUE(battery_in_discharge_temp_range());
+}
+
+void test_battery_balancing_needed(void)
+{
+    // Voltage difference below threshold - no balancing needed
+    battery_state_t balanced_state = {};
+    balanced_state.upper_cell_voltage_v = 3.7f;
+    balanced_state.lower_cell_voltage_v = 3.69f; // Difference = 0.01V
+    battery_set_state(balanced_state);
+    TEST_ASSERT_FALSE(battery_balancing_needed());
+
+    // Voltage difference exactly at threshold - no balancing needed
+    battery_state_t at_threshold_state = {};
+    at_threshold_state.upper_cell_voltage_v = 3.7f + BALANCE_THRESHOLD_V;
+    at_threshold_state.lower_cell_voltage_v = 3.7f;
+    battery_set_state(at_threshold_state);
+    TEST_ASSERT_FALSE(battery_balancing_needed()); // Should return false when exactly at threshold
+
+    // Voltage difference just above threshold - balancing needed
+    battery_state_t slightly_unbalanced_state = {};
+    slightly_unbalanced_state.upper_cell_voltage_v = 3.7f + BALANCE_THRESHOLD_V + 0.001f;
+    slightly_unbalanced_state.lower_cell_voltage_v = 3.7f;
+    battery_set_state(slightly_unbalanced_state);
+    TEST_ASSERT_TRUE(battery_balancing_needed());
+
+    // Significant voltage difference - balancing needed
+    battery_state_t very_unbalanced_state = {};
+    very_unbalanced_state.upper_cell_voltage_v = 3.8f;
+    very_unbalanced_state.lower_cell_voltage_v = 3.6f; // Difference = 0.2V
+    battery_set_state(very_unbalanced_state);
+    TEST_ASSERT_TRUE(battery_balancing_needed());
+
+    // Lower cell higher voltage - balancing needed
+    battery_state_t reverse_unbalanced_state = {};
+    reverse_unbalanced_state.upper_cell_voltage_v = 3.6f;
+    reverse_unbalanced_state.lower_cell_voltage_v = 3.8f; // Difference = 0.2V
+    battery_set_state(reverse_unbalanced_state);
+    TEST_ASSERT_TRUE(battery_balancing_needed());
+
+    // Equal voltages - no balancing needed
+    battery_state_t perfectly_balanced_state = {};
+    perfectly_balanced_state.upper_cell_voltage_v = 3.7f;
+    perfectly_balanced_state.lower_cell_voltage_v = 3.7f; // Difference = 0.0V
+    battery_set_state(perfectly_balanced_state);
+    TEST_ASSERT_FALSE(battery_balancing_needed());
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -188,5 +323,8 @@ int main(void)
     RUN_TEST(test_set_lower_discharge);
     RUN_TEST(test_battery_is_fully_charged);
     RUN_TEST(test_battery_is_depleted);
+    RUN_TEST(test_battery_in_charge_temp_range);
+    RUN_TEST(test_battery_in_discharge_temp_range);
+    RUN_TEST(test_battery_balancing_needed);
     return UNITY_END();
 }
