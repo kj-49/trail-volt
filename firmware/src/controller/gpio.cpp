@@ -14,7 +14,8 @@ void gpio_init()
     hal_pin_mode(ENCODER_CLK_PIN, INPUT);
 
     // Keep pin high by default (shutdown off)
-    hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, INPUT_PULLUP);
+    hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
+    hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, HIGH);
 
     // Keep high always
     hal_pin_mode(USB_ENABLE_PIN, OUTPUT);

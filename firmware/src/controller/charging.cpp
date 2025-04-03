@@ -91,7 +91,8 @@ static void charging_set_shutdown_pin(bool shutdown)
         pinMode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
         hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, LOW);
     } else {
-        hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, INPUT_PULLUP);
+        hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
+        hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, HIGH)
     }
 }
 
