@@ -190,7 +190,6 @@ void display_update() {
 
                 draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 draw_metric("CELL-DIFF", battery_get_voltage_difference(), "V", text_start_x, y_pos);
-                draw_metric("Duty Cycle", percentage_duty_cycle, "%", text_start_x, y_pos, 0);
                 
                 u8g2.setCursor(text_start_x, y_pos);
                 if (battery_state.lower_discharging) {
@@ -207,6 +206,8 @@ void display_update() {
                 u8g2.print("SUPPLYING");
                 u8g2.setFont(MEDIUM_FONT);
                 y_pos += 8;
+
+                draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 break;
 
             case MODE_MONITORING:
@@ -233,6 +234,8 @@ void display_update() {
                 u8g2.print("FAULT");
                 u8g2.setFont(MEDIUM_FONT);
                 y_pos += 8;
+
+                draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 break;
 
             case MODE_BATTERY_OVERTEMP:
@@ -241,6 +244,8 @@ void display_update() {
                 u8g2.print("OVERTEMP");
                 u8g2.setFont(MEDIUM_FONT);
                 y_pos += 8;
+
+                draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 break;
 
             case MODE_BATTERY_UNDER_MIN:
@@ -249,6 +254,8 @@ void display_update() {
                 u8g2.print("UNDER MIN");
                 u8g2.setFont(MEDIUM_FONT);
                 y_pos += 8;
+
+                draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 break;
 
             case MODE_MENU: {
