@@ -168,17 +168,10 @@ void display_update() {
                 draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 draw_metric("V-SUPPLY", charging_state.supply_metrics.ina.bus_voltage_v, "V", text_start_x, y_pos);
                 draw_metric("I-SUPPLY", charging_state.supply_metrics.ina.current_ma, "mA", text_start_x, y_pos);
+                draw_metric("V-BUCK", charging_state.buck_voltage_v, "V", text_start_x, y_pos);
                 draw_metric("I-BAT", charging_state.battery_metrics.ina.current_ma, "mA", text_start_x, y_pos);
                 draw_metric("Duty Cycle", percentage_duty_cycle, "%", text_start_x, y_pos, 0);
-                draw_metric("Efficiency", charging_get_power_efficiency(), "%", text_start_x, y_pos, 0);
                 
-                u8g2.setCursor(text_start_x, y_pos);
-                if (battery_state.lower_discharging) {
-                    u8g2.print("DRAINING LOWER");
-                } else if (battery_state.upper_discharging) {
-                    u8g2.print("DRAINING UPPER");
-                }
-                y_pos += 8;
                 break;
 
             case MODE_BALANCING:

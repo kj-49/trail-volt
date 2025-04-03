@@ -47,8 +47,6 @@ uint8_t charging_calculate_duty_cycle()
 {
     uint8_t current_duty_cycle = charging_state.duty_cycle_uint8;
     float current_charging_voltage_v = charging_state.battery_metrics.ina.bus_voltage_v;
-    
-    float critical = 1;
 
     float voltage_overshoot = current_charging_voltage_v - CHARGING_VOLTAGE_V;
     float error = fabs(voltage_overshoot);
@@ -58,13 +56,9 @@ uint8_t charging_calculate_duty_cycle()
         return current_duty_cycle;
     }
 
-    float alpha = 1.0 + (K * log(error / critical));
-    if(alpha < 0) {        // clamp alpha to zero, if alpha <0
-        alpha = 0;
-    }
-    float duty_cycle_step_uint8 = pow(error,alpha) + 1.0;
+    uint8_t duty_cycle_step_uint8 = 5;
 
-    // Ensure duty cycle step converges to minimum value at certain threshold
+    //Ensure duty cycle step converges to minimum value at certain threshold
     if (error < SLOW_STEP_THESHOLD_V) {
         duty_cycle_step_uint8 = 1;
     }    
