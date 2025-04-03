@@ -12,8 +12,8 @@ float get_resistance(int pin)
 {
     float voltage = adc_read(pin, THERMISTOR_ADC_DIVISION);
 
-    // Thermistors are on high-side of dividers
-    float resistance = ((ADC_VREF_CALIBRATED * SERIES_RESISTOR) / voltage) - SERIES_RESISTOR;
+    // Thermistors are on low-side of dividers
+    float resistance = (voltage * SERIES_RESISTOR) / (ADC_VREF_CALIBRATED - voltage);
 
     return resistance;
 }
