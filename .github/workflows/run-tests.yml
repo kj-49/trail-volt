@@ -44,6 +44,14 @@ jobs:
           "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
           -o "${GITHUB_WORKSPACE}/firmware/test/output/battery_tests.exe"
 
+      - name: Build State Manager Tests
+        run: |
+          g++ -Wall -Wextra -g3 -DUNIT_TEST -I../../lib/unity -I../src \
+          "${GITHUB_WORKSPACE}/firmware/test/state_manager_tests.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/src/controller/state_manager.cpp" \
+          "${GITHUB_WORKSPACE}/firmware/test/unity/unity.c" \
+          -o "${GITHUB_WORKSPACE}/firmware/test/output/state_manager_tests.exe"
+
       - name: Run ADC Tests
         run: |
           "${GITHUB_WORKSPACE}/firmware/test/output/adc_tests.exe"
@@ -55,3 +63,7 @@ jobs:
       - name: Run Battery Tests
         run: |
           "${GITHUB_WORKSPACE}/firmware/test/output/battery_tests.exe"
+
+      - name: Run State Manager Tests
+        run: |
+          "${GITHUB_WORKSPACE}/firmware/test/output/state_manager_tests.exe"
