@@ -21,8 +21,10 @@ FAKE_VALUE_FUNC(bool, battery_balancing_needed);
 FAKE_VALUE_FUNC(bool, charging_current_within_limits);
 FAKE_VALUE_FUNC(bool, battery_is_fully_charged, battery_metrics_t);
 FAKE_VALUE_FUNC(bool, battery_is_depleted, battery_metrics_t);
-FAKE_VOID_FUNC(charging_stop);
+FAKE_VOID_FUNC(charging_disable);
+FAKE_VOID_FUNC(charging_enable);
 FAKE_VOID_FUNC(supplying_disable);
+FAKE_VOID_FUNC(supplying_enable);
 FAKE_VOID_FUNC(battery_set_upper_discharge, bool);
 FAKE_VOID_FUNC(battery_set_lower_discharge, bool);
 FAKE_VALUE_FUNC(uint8_t, charging_calculate_duty_cycle);
@@ -45,8 +47,10 @@ void setUp(void) {
     RESET_FAKE(charging_current_within_limits);
     RESET_FAKE(battery_is_fully_charged);
     RESET_FAKE(battery_is_depleted);
-    RESET_FAKE(charging_stop);
+    RESET_FAKE(charging_disable);
+    RESET_FAKE(charging_enable);
     RESET_FAKE(supplying_disable);
+    RESET_FAKE(supplying_enable);
     RESET_FAKE(battery_set_upper_discharge);
     RESET_FAKE(battery_set_lower_discharge);
     RESET_FAKE(charging_calculate_duty_cycle);
@@ -204,6 +208,69 @@ void test_menu_transition_to_selected_state(void) {
     TEST_ASSERT_EQUAL(MODE_SUPPLYING, mode_set_fake.arg0_val);
 }
 
+void test_dual_to_overtemp_when_charge_too_hot(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    battery_in_charge_temp_range_fake.return_val = false;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_BATTERY_OVERTEMP, mode_set_fake.arg0_val);
+}
+
+void test_dual_to_overtemp_when_discharge_too_hot(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    battery_in_discharge_temp_range_fake.return_val = false;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_BATTERY_OVERTEMP, mode_set_fake.arg0_val);
+}
+
+void test_dual_to_charging_fault_when_current_out_of_range(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    charging_current_within_limits_fake.return_val = false;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_CHARGING_FAULT, mode_set_fake.arg0_val);
+}
+
+void test_dual_to_monitoring_when_fully_charged(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    battery_is_fully_charged_fake.return_val = true;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_MONITORING, mode_set_fake.arg0_val);
+}
+
+void test_dual_to_undervolt_when_depleted(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    battery_is_depleted_fake.return_val = true;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_BATTERY_UNDER_MIN, mode_set_fake.arg0_val);
+}
+
+void test_dual_to_balancing_when_needed(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    battery_balancing_needed_fake.return_val = true;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_BALANCING, mode_set_fake.arg0_val);
+}
+
+void test_dual_to_menu_on_button_press(void) {
+    mode_get_fake.return_val = MODE_DUAL;
+    encoder_get_event_fake.return_val = ENCODER_EVENT_BUTTON_PRESS;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_MENU, mode_set_fake.arg0_val);
+}
+
 void test_default_case_handling(void) {
     mode_get_fake.return_val = (mode_e)99; // Invalid mode
     
@@ -235,6 +302,14 @@ int main(void) {
     
     RUN_TEST(test_menu_transition_to_selected_state);
     
+    RUN_TEST(test_dual_to_overtemp_when_charge_too_hot);
+    RUN_TEST(test_dual_to_overtemp_when_discharge_too_hot);
+    RUN_TEST(test_dual_to_charging_fault_when_current_out_of_range);
+    RUN_TEST(test_dual_to_monitoring_when_fully_charged);
+    RUN_TEST(test_dual_to_undervolt_when_depleted);
+    RUN_TEST(test_dual_to_balancing_when_needed);
+    RUN_TEST(test_dual_to_menu_on_button_press);
+
     RUN_TEST(test_default_case_handling);
     
     return UNITY_END();

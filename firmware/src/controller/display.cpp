@@ -257,10 +257,19 @@ void display_update() {
                 u8g2.setFont(TITLE_FONT);
                 
                 // Center menu items
-                int textHeight = 12;
-                int startX = (128 - 48) / 2;
-                int startY = (64 - (textHeight * 2)) / 2;
+                int spacing = 20;
+                int startX = 40;
+                int startY = 15;
 
+                // Draw first menu option
+                if (selected_mode == MODE_DUAL) {
+                    u8g2.setCursor(startX - 12, startY);
+                    u8g2.print("> ");
+                }
+                u8g2.setCursor(startX, startY);
+                u8g2.print("DUAL");
+
+                startY += spacing;
                 // Draw first menu option
                 if (selected_mode == MODE_RECEIVING) {
                     u8g2.setCursor(startX - 12, startY);
@@ -269,16 +278,30 @@ void display_update() {
                 u8g2.setCursor(startX, startY);
                 u8g2.print("RECEIVE");
 
+                startY += spacing;
                 // Draw second menu option
                 if (selected_mode == MODE_SUPPLYING) {
-                    u8g2.setCursor(startX - 12, startY + textHeight + 8);
+                    u8g2.setCursor(startX - 12, startY);
                     u8g2.print("> ");
                 }
-                u8g2.setCursor(startX, startY + textHeight + 8);
+                u8g2.setCursor(startX, startY);
                 u8g2.print("SUPPLY");
                 break;
             }
+            case MODE_DUAL:
+                u8g2.setFont(TITLE_FONT);
+                u8g2.setCursor(text_start_x, y_pos);
+                u8g2.print("DUAL");
+                u8g2.setFont(MEDIUM_FONT);
+                y_pos += 8;
 
+                draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
+                draw_metric("V-BAT-INA", charging_state.battery_metrics.ina.bus_voltage_v, "V", text_start_x, y_pos);
+                draw_metric("I-BAT", charging_state.battery_metrics.ina.current_ma, "mA", text_start_x, y_pos);
+                draw_metric("V-BUCK", charging_state.buck_voltage_v, "V", text_start_x, y_pos);
+                draw_metric("Duty Cycle", percentage_duty_cycle, "%", text_start_x, y_pos, 0);
+                draw_metric("Efficiency", charging_get_power_efficiency(), "%", text_start_x, y_pos, 0);
+                break;
             default:
                 u8g2.setFont(TITLE_FONT);
                 u8g2.setCursor(text_start_x, y_pos);
