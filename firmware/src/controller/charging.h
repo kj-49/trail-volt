@@ -76,7 +76,12 @@ void charging_set_duty_cycle(uint8_t duty_cycle);
 /**
  * @brief  Sets the shutdown pin
  */
-void charging_stop();
+void charging_disable();
+
+/**
+ * @brief  Sets the shutdown pin
+ */
+void charging_enable();
 
 /**
  * @brief  Calculates the new duty cycle applied to gate driver input.

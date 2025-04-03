@@ -85,7 +85,7 @@ void charging_set_duty_cycle(uint8_t duty_cycle)
     charging_state.duty_cycle_uint8 = sanitized_duty_cycle;
 }
 
-void charging_set_shutdown_pin(bool shutdown)
+static void charging_set_shutdown_pin(bool shutdown)
 {
     if (shutdown) {
         pinMode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
@@ -95,7 +95,7 @@ void charging_set_shutdown_pin(bool shutdown)
     }
 }
 
-void charging_stop()
+void charging_disable()
 {
     // Pull shut-down pin low on gate driver
     charging_set_shutdown_pin(true);
@@ -105,6 +105,15 @@ void charging_stop()
 
     return;
 }
+
+void charging_enable()
+{
+    // Pull shut-down pin low on gate driver
+    charging_set_shutdown_pin(false);
+
+    return;
+}
+
 
 bool charging_current_within_limits()
 {

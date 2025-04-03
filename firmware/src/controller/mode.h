@@ -9,10 +9,11 @@ typedef enum {
   MODE_BALANCING = 5,
   MODE_BATTERY_OVERTEMP = 6,
   MODE_BATTERY_UNDER_MIN = 7,
+  MODE_DUAL = 8,
   MODE_MENU = 9,
 } mode_e;
 
 mode_e mode_get();
 void mode_set(mode_e mode);
 
-#endif	/* APPLICATION_H */
+#endif	/* MODE_H */
