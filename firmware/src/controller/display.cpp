@@ -297,7 +297,7 @@ void display_update() {
                 draw_metric("CHARGE", battery_get_total_percentage(), "%", text_start_x, y_pos, 2);
                 draw_metric("V-SUPPLY", charging_state.supply_metrics.ina.bus_voltage_v, "V", text_start_x, y_pos);
                 draw_metric("I-SUPPLY", charging_state.supply_metrics.ina.current_ma, "mA", text_start_x, y_pos);
-                draw_metric("V-BAT", charging_state.battery_metrics.ina.current_ma, "mA", text_start_x, y_pos);
+                draw_metric("V-BAT", charging_state.battery_metrics.ina.bus_voltage_v, "V", text_start_x, y_pos);
                 draw_metric("I-BAT", charging_state.battery_metrics.ina.current_ma, "mA", text_start_x, y_pos);
                 draw_metric("Efficiency", charging_get_power_efficiency(), "%", text_start_x, y_pos, 0);
 
