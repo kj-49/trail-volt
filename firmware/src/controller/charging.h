@@ -9,7 +9,7 @@
 const float CHARGE_VOLTAGE_DIVIDER_RATIO = 3.925;
 
 /**
- * The acceptable difference between CHARGING_VOLTAGE_V and our current charging.
+ * The acceptable difference between CHARGING_VOLTAGE_V and our battery voltage during charging.
  */
 const float CHARING_VOLTAGE_TOLERANCE = 0.050;
 
@@ -34,7 +34,7 @@ typedef struct {
 } ina_metrics_t;
 
 /*
- * Wrap the types for better type safety throughout the code.
+ * Wrap the types for better type safety.
  */
 typedef struct {
     ina_metrics_t ina;

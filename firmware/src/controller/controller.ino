@@ -30,9 +30,9 @@ void setup()
 
 void loop() 
 {
-    // Update the application state (take ADC readings etc)
+    // Update the inputs (take ADC readings etc)
     state_manager_update_sensors();
-    // Determine the next FSM state based on the new updated state
+    // Determine the next FSM state based on the new updated inputs
     state_manager_update_mode();
     // Make hardware updates
     state_manager_apply_hardware_updates();

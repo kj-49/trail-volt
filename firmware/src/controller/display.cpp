@@ -74,7 +74,6 @@ void display_init() {
         return;
     }
     
-    u8g2.setFont(u8g2_font_profont10_mf);  // Using ProFont which supports numbers well
     u8g2.setDisplayRotation(U8G2_R0);
     
     // Show init message
@@ -85,8 +84,7 @@ void display_init() {
     } while (u8g2.nextPage());
 }
 
-// Helper function to draw metrics using cursor positioning
-void draw_metric(const char* label, float value, const char* unit, uint8_t x, uint8_t& y, uint8_t decimals = 2) {
+static void draw_metric(const char* label, float value, const char* unit, uint8_t x, uint8_t& y, uint8_t decimals = 2) {
     u8g2.setCursor(x, y);
     u8g2.print(label);
     u8g2.print(": ");

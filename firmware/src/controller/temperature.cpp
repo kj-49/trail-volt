@@ -25,9 +25,9 @@ float get_resistance(int pin)
  */
 static float get_temp_from_thermistor(int pin)
 {
-    const float R0 = 10000.0f;
-    const float Beta = 3380.0f;
-    const float T0 = 298.15f;
+    const float R0 = 10000.0;
+    const float Beta = 3380.0;
+    const float T0 = 298.15;
     
     float r_ntc = get_resistance(pin);
 

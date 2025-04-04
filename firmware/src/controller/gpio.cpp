@@ -17,7 +17,7 @@ void gpio_init()
     hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
     hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, HIGH);
 
-    // Keep high always
+    // Initialize to low
     hal_pin_mode(USB_ENABLE_PIN, OUTPUT);
     hal_pin_mode(USB_ENABLE_PIN, LOW);
 

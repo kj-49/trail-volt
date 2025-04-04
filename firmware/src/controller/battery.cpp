@@ -122,10 +122,6 @@ float battery_get_upper_percentage()
 {
     float voltage = battery_state.upper_cell_voltage_v;
 
-    /*
-    * We will normalize our battery percentage to our desired the max voltage.
-    * This may be lower than the batteries actual maximum voltage.
-    */
     float percentage = (voltage / FULLY_CHARGED_SINGLE_CELL_V) * 100;
 
     return percentage;
@@ -135,10 +131,6 @@ float battery_get_lower_percentage()
 {
     float voltage = battery_state.lower_cell_voltage_v;
 
-    /*
-    * We will normalize our battery percentage to our desired the max voltage.
-    * This may be lower than the batteries actual maximum voltage.
-    */
     float percentage = (voltage / FULLY_CHARGED_SINGLE_CELL_V) * 100;
 
     return percentage;
@@ -150,10 +142,6 @@ float battery_get_total_percentage()
 
     float maximum_series_voltage = FULLY_CHARGED_SINGLE_CELL_V * 2;
 
-    /*
-    * We will normalize our battery percentage to our desired the max voltage.
-    * This may be lower than the batteries actual maximum voltage.
-    */
     float percentage = (total_voltage / maximum_series_voltage) * 100;
 
     return percentage;

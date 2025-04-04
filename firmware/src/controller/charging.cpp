@@ -6,8 +6,6 @@
 #include <Adafruit_INA260.h>
 #include "debug.h"
 
-#define K 1  // Constant for scaling.
-
 static charging_state_t charging_state;
 
 static Adafruit_INA260 battery_ina = Adafruit_INA260();
@@ -56,27 +54,26 @@ uint8_t charging_calculate_duty_cycle()
         return current_duty_cycle;
     }
 
-    uint8_t duty_cycle_step_uint8 = 5;
+    uint8_t duty_cycle_step = 5;
 
     //Ensure duty cycle step converges to minimum value at certain threshold
     if (error < SLOW_STEP_THESHOLD_V) {
-        duty_cycle_step_uint8 = 1;
+        duty_cycle_step = 1;
     }    
 
     if (voltage_overshoot > 0) {
         // Decrease duty cycle -> decrease voltage
-        return constrain(current_duty_cycle - duty_cycle_step_uint8, 0, 255);
+        return current_duty_cycle - duty_cycle_step;
     } else {
         // Increase duty cycle -> increase voltage
-        return constrain(current_duty_cycle + duty_cycle_step_uint8, 0, 255);
+        return current_duty_cycle + duty_cycle_step;
     }
 }
 
 void charging_set_duty_cycle(uint8_t duty_cycle)
 {
-    uint8_t sanitized_duty_cycle = constrain(duty_cycle, 0, 255);
-    analogWrite(CHARGE_PWM_PIN, sanitized_duty_cycle);
-    charging_state.duty_cycle_uint8 = sanitized_duty_cycle;
+    analogWrite(CHARGE_PWM_PIN, duty_cycle);
+    charging_state.duty_cycle_uint8 = duty_cycle;
 }
 
 static void charging_set_shutdown_pin(bool shutdown)
@@ -86,7 +83,7 @@ static void charging_set_shutdown_pin(bool shutdown)
         hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, LOW);
     } else {
         hal_pin_mode(H_BRIDGE_SHUT_DOWN_PIN_AL, OUTPUT);
-        hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, HIGH)
+        hal_digital_write(H_BRIDGE_SHUT_DOWN_PIN_AL, HIGH);
     }
 }
 
