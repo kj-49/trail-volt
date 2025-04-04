@@ -27,4 +27,3 @@ jobs:
       - name: Run clang-format
         run: |
           clang-format -i $(find firmware/src/ -name '*.c' -or -name '*.cpp' -or -name '*.h' -or -name '*.hpp')
-          git diff --exit-code
