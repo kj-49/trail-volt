@@ -1,7 +1,12 @@
 name: Lint Code
 
 on:
+  push:
+    branches:
+      - lint
   pull_request:
+    branches:
+      - lint
     paths:
       - '**/*.c'
       - '**/*.cpp'
