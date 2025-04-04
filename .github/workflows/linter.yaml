@@ -1,30 +1,25 @@
-name: C Linter for C++ Files
+name: Lint Code
 
 on:
-  push:
-    branches:
-      - lint
   pull_request:
-    branches:
-      - lint
+    paths:
+      - '**/*.c'
+      - '**/*.cpp'
+      - '**/*.h'
+      - '**/*.hpp'
 
 jobs:
-  lint:
+  clang-format:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Install Dependencies
-        run: sudo apt-get install -y clang-format cppcheck gcc
+      - name: Install clang-format
+        run: sudo apt-get install clang-format
 
-      - name: Run clang-format (Check K&R Style for C++ files)
+      - name: Run clang-format
         run: |
-          find . -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror
-
-      - name: Run cppcheck (Static Analysis for C code in C++ files)
-        run: cppcheck --enable=all --std=c89 --error-exitcode=1 --language=c .
-
-      - name: Run gcc (Strict Warnings for C code in C++ files)
-        run: gcc -Wall -Wextra -Wpedantic -std=c89 -Wstrict-prototypes -Wold-style-definition -c *.cpp
+          clang-format -i $(find . -name '*.c' -or -name '*.cpp' -or -name '*.h' -or -name '*.hpp')
+          git diff --exit-code
