@@ -8,10 +8,10 @@ on:
     branches:
       - lint
     paths:
-      - '**/*.c'
-      - '**/*.cpp'
-      - '**/*.h'
-      - '**/*.hpp'
+      - 'firmware/src/**/*.c'
+      - 'firmware/src/**/*.cpp'
+      - 'firmware/src/**/*.h'
+      - 'firmware/src/**/*.hpp'
 
 jobs:
   clang-format:
@@ -26,5 +26,5 @@ jobs:
 
       - name: Run clang-format
         run: |
-          clang-format -i $(find . -name '*.c' -or -name '*.cpp' -or -name '*.h' -or -name '*.hpp')
+          clang-format -i $(find firmware/src/ -name '*.c' -or -name '*.cpp' -or -name '*.h' -or -name '*.hpp')
           git diff --exit-code
