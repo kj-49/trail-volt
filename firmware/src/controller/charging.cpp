@@ -62,9 +62,17 @@ uint8_t charging_calculate_duty_cycle()
     }    
 
     if (voltage_overshoot > 0) {
+        // Ensure uint8 doesn't wrap
+        if ((int)current_duty_cycle - (int)duty_cycle_step < 0) {
+            return 0;
+        }
         // Decrease duty cycle -> decrease voltage
         return current_duty_cycle - duty_cycle_step;
     } else {
+        // Ensure uint8 doesn't wrap
+        if ((int)current_duty_cycle + (int)duty_cycle_step > 255) {
+            return 255;
+        }
         // Increase duty cycle -> increase voltage
         return current_duty_cycle + duty_cycle_step;
     }
