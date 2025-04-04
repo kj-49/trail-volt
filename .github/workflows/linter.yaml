@@ -1,0 +1,30 @@
+name: C Linter for C++ Files
+
+on:
+  push:
+    branches:
+      - lint
+  pull_request:
+    branches:
+      - lint
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: sudo apt-get install -y clang-format cppcheck gcc
+
+      - name: Run clang-format (Check K&R Style for C++ files)
+        run: |
+          find . -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror --style=Kr
+
+      - name: Run cppcheck (Static Analysis for C code in C++ files)
+        run: cppcheck --enable=all --std=c89 --error-exitcode=1 --language=c .
+
+      - name: Run gcc (Strict Warnings for C code in C++ files)
+        run: gcc -Wall -Wextra -Wpedantic -std=c89 -Wstrict-prototypes -Wold-style-definition -c *.cpp
