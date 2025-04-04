@@ -21,7 +21,7 @@ jobs:
 
       - name: Run clang-format (Check K&R Style for C++ files)
         run: |
-          find . -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror --style=Kr
+          find . -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror
 
       - name: Run cppcheck (Static Analysis for C code in C++ files)
         run: cppcheck --enable=all --std=c89 --error-exitcode=1 --language=c .
