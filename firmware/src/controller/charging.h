@@ -20,7 +20,7 @@ const float SLOW_STEP_THESHOLD_V = 1.00;
 
 const float CHARGING_VOLTAGE_V = 8.2;
 
-const float MAX_CHARGE_CURRENT_mA = 500.0;
+const float MAX_CHARGE_CURRENT_mA = 1000.0;
 
 // A0 & A1 tied to GND
 #define SUPPLY_INA_ADDRESS 0x45
