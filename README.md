@@ -1,3 +1,11 @@
+### User Interface
+
+<div style="display: flex; gap: 10px; align-items: flex-start;">
+  <img src="https://github.com/kj-49/trail-volt/blob/docs/assets/ui/menu.jpg?raw=true" alt="menu" height="150"/>
+  <img src="https://github.com/kj-49/trail-volt/blob/docs/assets/ui/dual.jpg?raw=true" alt="dual" height="150"/>
+  <img src="https://github.com/kj-49/trail-volt/blob/docs/assets/ui/balancing.jpg?raw=true" alt="balancing" height="150"/>
+</div>
+
 ### Pinout Diagram
 
 | Pin | Function      | Description                        |
