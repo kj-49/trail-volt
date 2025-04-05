@@ -19,7 +19,7 @@ void gpio_init()
 
     // Initialize to low
     hal_pin_mode(USB_ENABLE_PIN, OUTPUT);
-    hal_pin_mode(USB_ENABLE_PIN, LOW);
+    hal_digital_write(USB_ENABLE_PIN, LOW);
 
     hal_pin_mode(C1_BALANCING_PIN, OUTPUT);
     hal_pin_mode(C2_BALANCING_PIN, OUTPUT);
