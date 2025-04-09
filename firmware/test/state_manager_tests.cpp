@@ -18,6 +18,7 @@ FAKE_VOID_FUNC(charging_update_state);
 FAKE_VALUE_FUNC(bool, battery_in_charge_temp_range);
 FAKE_VALUE_FUNC(bool, battery_in_discharge_temp_range);
 FAKE_VALUE_FUNC(bool, battery_balancing_needed);
+FAKE_VALUE_FUNC(bool, battery_balancing_done);
 FAKE_VALUE_FUNC(bool, charging_current_within_limits);
 FAKE_VALUE_FUNC(bool, battery_is_fully_charged, battery_metrics_t);
 FAKE_VALUE_FUNC(bool, battery_is_depleted, battery_metrics_t);
@@ -44,6 +45,7 @@ void setUp(void) {
     RESET_FAKE(battery_in_charge_temp_range);
     RESET_FAKE(battery_in_discharge_temp_range);
     RESET_FAKE(battery_balancing_needed);
+    RESET_FAKE(battery_balancing_done);
     RESET_FAKE(charging_current_within_limits);
     RESET_FAKE(battery_is_fully_charged);
     RESET_FAKE(battery_is_depleted);
@@ -63,6 +65,7 @@ void setUp(void) {
     battery_in_charge_temp_range_fake.return_val = true;
     battery_in_discharge_temp_range_fake.return_val = true;
     battery_balancing_needed_fake.return_val = false;
+    battery_balancing_done_fake.return_val = true;
     charging_current_within_limits_fake.return_val = true;
     battery_is_fully_charged_fake.return_val = false;
     battery_is_depleted_fake.return_val = false;
@@ -171,9 +174,18 @@ void test_monitoring_to_menu_on_button_press(void) {
     TEST_ASSERT_EQUAL(MODE_MENU, mode_set_fake.arg0_val);
 }
 
+void test_balancing_to_balancing_when_not_done_balanced(void) {
+    mode_get_fake.return_val = MODE_BALANCING;
+    battery_balancing_done_fake.return_val = false;
+    
+    state_manager_update_mode();
+    
+    TEST_ASSERT_EQUAL(MODE_BALANCING, mode_set_fake.arg0_val);
+}
+
 void test_balancing_to_monitoring_when_balanced(void) {
     mode_get_fake.return_val = MODE_BALANCING;
-    battery_balancing_needed_fake.return_val = false;
+    battery_balancing_done_fake.return_val = true;
     
     state_manager_update_mode();
     
@@ -296,6 +308,7 @@ int main(void) {
     RUN_TEST(test_monitoring_to_balancing_when_needed);
     RUN_TEST(test_monitoring_to_menu_on_button_press);
     
+    RUN_TEST(test_balancing_to_balancing_when_not_done_balanced);
     RUN_TEST(test_balancing_to_monitoring_when_balanced);
     RUN_TEST(test_balancing_to_overtemp_when_too_hot);
     RUN_TEST(test_balancing_to_undervolt_when_depleted);
