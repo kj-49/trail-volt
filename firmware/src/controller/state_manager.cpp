@@ -95,7 +95,7 @@ void state_manager_update_mode()
                 next_mode = MODE_BATTERY_UNDER_MIN;
                 break;
             }
-            if (!battery_balancing_needed()) {
+            if (battery_balancing_done()) {
                 next_mode = MODE_MONITORING;
                 break;
             }
