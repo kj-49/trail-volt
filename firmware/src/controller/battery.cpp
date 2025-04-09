@@ -61,6 +61,12 @@ bool battery_balancing_needed()
     return (voltage_diff > BALANCE_THRESHOLD_V);
 }
 
+bool battery_balancing_done()
+{
+    float voltage_diff = battery_get_voltage_difference();
+    return (voltage_diff < BALANCING_DONE_THRESHOLD_V);
+}
+
 bool battery_is_fully_charged(battery_metrics_t battery_metrics)
 {
     /*

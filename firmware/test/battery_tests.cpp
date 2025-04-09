@@ -316,6 +316,22 @@ void test_battery_balancing_needed(void)
     TEST_ASSERT_FALSE(battery_balancing_needed());
 }
 
+void test_battery_balancing_done(void)
+{
+    battery_state_t done_balanced_state = {};
+    done_balanced_state.upper_cell_voltage_v = 3.7f;
+    done_balanced_state.lower_cell_voltage_v = 3.7f - BALANCING_DONE_THRESHOLD_V + 0.0001;
+    battery_set_state(done_balanced_state);
+    TEST_ASSERT_TRUE(battery_balancing_done());
+
+    battery_state_t not_done_balanced_state = {};
+    not_done_balanced_state.upper_cell_voltage_v = 3.7f;
+    not_done_balanced_state.lower_cell_voltage_v = 3.7f - BALANCING_DONE_THRESHOLD_V - 0.0001;
+    battery_set_state(not_done_balanced_state);
+    TEST_ASSERT_FALSE(battery_balancing_done());
+}
+
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -326,5 +342,6 @@ int main(void)
     RUN_TEST(test_battery_in_charge_temp_range);
     RUN_TEST(test_battery_in_discharge_temp_range);
     RUN_TEST(test_battery_balancing_needed);
+    RUN_TEST(test_battery_balancing_done);
     return UNITY_END();
 }

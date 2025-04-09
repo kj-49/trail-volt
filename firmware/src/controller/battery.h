@@ -11,6 +11,10 @@ const float LOWER_CELL_ADC_DIVISION = 4.0;
  * The tolerable difference between the upper and lower cell voltages.
  */
 const float BALANCE_THRESHOLD_V = 0.1;
+/**
+ * The difference when it is acceptable to stop balancing.
+ */
+const float BALANCING_DONE_THRESHOLD_V = 0.01;
 
 /*
  * This is the single cell voltage we wish to charge our cells to.
@@ -75,6 +79,12 @@ void battery_update_state();
  * @return True if balancing is needed.
  */
 bool battery_balancing_needed();
+
+/**
+ * @brief  Determines whether cell balancing is done.
+ * @return True if balancing is done.
+ */
+bool battery_balancing_done();
 
 /**
  * @brief  Get the voltage difference between the upper cell voltage and the lower cell voltage.
