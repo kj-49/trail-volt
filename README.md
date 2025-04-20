@@ -1,5 +1,5 @@
 <img src="https://github.com/kj-49/trail-volt/blob/readme/assets/logo.png?raw=true" alt="menu" height="125"/>
-__Trail Volt__ is a portable, rechargeable lithium-ion battery pack developed for a third-year Electrical Engineering project course. It features dual charging capabilities—solar and hand-crank—and can power two mobile devices consecutively through USB-C ports.
+**Trail Volt** is a portable, rechargeable lithium-ion battery pack developed for a third-year Electrical Engineering project course. It features dual charging capabilities—solar and hand-crank—and can power two mobile devices consecutively through USB-C ports.
 It includes an intelligent battery management system with active cell balancing, temperature monitoring, and current sensing for safe and efficient operation. A rotary encoder and OLED screen provide an intuitive user interface, while onboard firmware manages charging, discharging, and fault protection modes.
 
 ### User Interface
